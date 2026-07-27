@@ -24,31 +24,41 @@
   "rooms": [
     {
       "title": "Habitación Diaria Pareja",
+      "title_key": "room1_title",
       "description": "El rincón romántico perfecto. Disfruta de la intimidad y la vista más espectacular de la bahía desde tu balcón privado. Valor: $25.000.",
+      "desc_key": "room1_desc",
       "image": "hab_diaria_pareja.jpg",
       "features": ["🛌 Cama 2 plazas", "📺 Smart TV", "🌅 Balcón independiente", "🌊 Vista a la bahía", "🚿 Baño compartido"]
     },
     {
       "title": "Habitación Diaria Individual",
+      "title_key": "room2_title",
       "description": "Tu santuario de desconexión. Diseñada para viajeros que buscan paz, tranquilidad y una vista que invita a soñar. Valor: $15.000.",
+      "desc_key": "room2_desc",
       "image": "hab_diaria_individual.jpg",
       "features": ["🛌 Cama individual", "📺 Smart TV", "📶 Wi-Fi alta velocidad", "🚿 Baño compartido"]
     },
     {
       "title": "Arriendo Mensual Matrimonial",
+      "title_key": "room3_title",
       "description": "Convierte el puerto en tu hogar. Espacio amplio y acogedor para estadías largas, rodeado de calma y belleza. Valor: Desde $250.000 a $270.000.",
+      "desc_key": "room3_desc",
       "image": "VISTA.jpg",
       "features": ["👩‍❤️‍👨 Especial para parejas", "📺 Smart TV incluido", "🏠 Acceso a áreas comunes", "🌳 Cerca de Plazas Bismark"]
     },
     {
       "title": "Arriendo Mensual Individual",
+      "title_key": "room4_title",
       "description": "Inspira tus días con el mejor entorno. El lugar ideal para estudiantes o profesionales que valoran el silencio y el arte. Valor: Desde $170.000 a $230.000.",
+      "desc_key": "room4_desc",
       "image": "arriendo_mensual_individual.jpg",
       "features": ["✏️ Ambiente de estudio y paz", "📺 Smart TV", "📶 Wi-Fi dedicado", "📍 Ubicación estratégica"]
     },
     {
       "title": "Casa en Arriendo",
+      "title_key": "room5_title",
       "description": "Se arrienda en $350.000. Casa con patio, 2 dormitorios (un camarote para dos personas y una cama individual), cocina, living comedor y baño. Todo con una excelente vista al mar.",
+      "desc_key": "room5_desc",
       "image": "nueva_casa.jpg",
       "features": ["🌊 Excelente vista al mar", "📶 Wi-Fi incluido", "🛏️ 2 Dormitorios", "🍳 Cocina, Living y Baño"]
     }

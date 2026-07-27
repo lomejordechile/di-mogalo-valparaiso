@@ -7,10 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Translation initialization
   const langSelector = document.getElementById('lang-selector');
-  const elementsToTranslate = document.querySelectorAll('[data-i18n]');
-
   const updateLanguage = (lang) => {
-    elementsToTranslate.forEach(el => {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       if (translations[lang] && translations[lang][key]) {
         el.textContent = translations[lang][key];
@@ -187,8 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
                   <img src="${room.image || ''}" alt="${room.title || ''}">
                 </div>
                 <div class="room-details">
-                  <h3>${room.title || 'Habitación'}</h3>
-                  <p>${room.description || ''}</p>
+                  <h3 data-i18n="${room.title_key || ''}">${room.title || 'Habitación'}</h3>
+                  <p data-i18n="${room.desc_key || ''}">${room.description || ''}</p>
                   <ul class="room-bullets">
                     ${(room.features || []).map(f => `
                       <li><span>${f}</span></li>
@@ -309,7 +307,10 @@ document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
       }
       
-      // Re-trigger reveal check
+      // Re-trigger reveal check and apply translations
+      if (langSelector) {
+        updateLanguage(langSelector.value || 'es');
+      }
       revealOnScroll();
 
     } catch (err) {
