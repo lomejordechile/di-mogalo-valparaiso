@@ -294,6 +294,394 @@
         </div>
     </section>
 
+    <!-- Sección: Dónde ir en Valparaíso -->
+    <style>
+      #donde-ir {
+        padding: 60px 20px;
+        background: #0f1620;
+        color: #f2f2f2;
+      }
+      #donde-ir .dg-wrap { max-width: 1200px; margin: 0 auto; }
+      #donde-ir .dg-eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 13px;
+        color: #e0a458;
+        margin-bottom: 8px;
+        text-align: center;
+      }
+      #donde-ir h2 { text-align: center; font-size: 2rem; margin-bottom: 10px; }
+      #donde-ir .dg-subtitle {
+        text-align: center;
+        max-width: 640px;
+        margin: 0 auto 8px auto;
+        color: #c7c7c7;
+        line-height: 1.5;
+      }
+      #donde-ir .dg-address {
+        text-align: center;
+        font-size: 13px;
+        color: #7f8aa0;
+        margin-bottom: 40px;
+      }
+
+      #donde-ir .dg-category { margin-bottom: 56px; }
+      #donde-ir .dg-cat-header {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 22px;
+        border-bottom: 1px solid #263349;
+        padding-bottom: 12px;
+      }
+      #donde-ir .dg-cat-header h3 { font-size: 1.4rem; margin: 0; color: #fff; }
+      #donde-ir .dg-cat-header span { font-size: 13px; color: #e0a458; }
+
+      #donde-ir .dg-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+      }
+      @media (max-width: 900px) {
+        #donde-ir .dg-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 600px) {
+        #donde-ir .dg-grid { grid-template-columns: 1fr; }
+      }
+
+      /* Tarjeta = link completo */
+      #donde-ir .dg-card {
+        display: block;
+        text-decoration: none;
+        background: #182233;
+        border: 1px solid #263349;
+        border-radius: 14px;
+        padding: 22px 18px 20px 18px;
+        transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+        cursor: pointer;
+      }
+      #donde-ir .dg-card:hover {
+        transform: translateY(-4px);
+        border-color: #e0a458;
+        background: #1d2a3f;
+      }
+
+      /* Icono animado: flota suavemente todo el tiempo */
+      #donde-ir .dg-icon {
+        font-size: 42px;
+        display: inline-block;
+        margin-bottom: 12px;
+        animation: dg-float 3s ease-in-out infinite;
+      }
+      @keyframes dg-float {
+        0%   { transform: translateY(0px) rotate(0deg); }
+        50%  { transform: translateY(-8px) rotate(-4deg); }
+        100% { transform: translateY(0px) rotate(0deg); }
+      }
+      /* Al pasar el mouse por la tarjeta, el icono "salta" con más energía */
+      #donde-ir .dg-card:hover .dg-icon {
+        animation: dg-bounce 0.6s ease infinite;
+      }
+      @keyframes dg-bounce {
+        0%, 100% { transform: translateY(0) scale(1); }
+        30%      { transform: translateY(-12px) scale(1.15); }
+        50%      { transform: translateY(0) scale(0.95); }
+        70%      { transform: translateY(-4px) scale(1.05); }
+      }
+      /* Pequeño desfase entre tarjetas para que no floten todas iguales */
+      #donde-ir .dg-grid .dg-card:nth-child(2) .dg-icon { animation-delay: 0.4s; }
+      #donde-ir .dg-grid .dg-card:nth-child(3) .dg-icon { animation-delay: 0.8s; }
+      #donde-ir .dg-grid .dg-card:nth-child(4) .dg-icon { animation-delay: 1.2s; }
+      #donde-ir .dg-grid .dg-card:nth-child(5) .dg-icon { animation-delay: 1.6s; }
+      #donde-ir .dg-grid .dg-card:nth-child(6) .dg-icon { animation-delay: 2.0s; }
+
+      #donde-ir .dg-body strong {
+        display: block;
+        font-size: 1rem;
+        color: #ffffff;
+        margin-bottom: 6px;
+      }
+      #donde-ir .dg-body p {
+        font-size: 13.5px;
+        color: #b7bfcc;
+        line-height: 1.45;
+        margin: 0 0 12px 0;
+      }
+      #donde-ir .dg-distance {
+        display: inline-block;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: #e0a458;
+        background: rgba(224,164,88,0.12);
+        padding: 4px 10px;
+        border-radius: 999px;
+        margin-bottom: 10px;
+      }
+      #donde-ir .dg-maps-link {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #7fb8ff;
+      }
+      #donde-ir .dg-maps-link .dg-pin { font-size: 15px; }
+
+      #donde-ir .dg-note {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #9aa4b2;
+      }
+    </style>
+
+    <section id="donde-ir">
+      <div class="dg-wrap">
+        <div class="dg-eyebrow">Guía Porteña</div>
+        <h2>Dónde ir en Valparaíso</h2>
+        <p class="dg-subtitle">
+          Toca cualquier lugar para abrir la ruta caminando en Google Maps directo desde el hostal.
+        </p>
+        <p class="dg-address">Distancias aproximadas desde Calle Israel 108, Valparaíso</p>
+
+        <!-- ============ RESTAURANTES ============ -->
+        <div class="dg-category">
+          <div class="dg-cat-header">
+            <h3>🍽️ Restaurantes</h3>
+            <span>Sabores del puerto</span>
+          </div>
+          <div class="dg-grid">
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Restaurante+La+Concepcion+Valparaiso&destination_place_id=ChIJozwSyy7hiZYR8BHgm5wx2Ak&travelmode=walking">
+              <span class="dg-icon">🍽️</span>
+              <div class="dg-body">
+                <strong>Restaurante La Concepción</strong>
+                <p>En Cerro Alegre, dentro de un edificio patrimonial con vista al mar.</p>
+                <span class="dg-distance">~1,7 km · 25 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Pasta+e+Vino+Valparaiso&destination_place_id=ChIJZ9m8oC7hiZYRcqOvsS5DEmA&travelmode=walking">
+              <span class="dg-icon">🍝</span>
+              <div class="dg-body">
+                <strong>Pasta e Vino</strong>
+                <p>Pastas y buena carta de vinos en un entorno sofisticado.</p>
+                <span class="dg-distance">~1,6 km · 25 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Restoran+Capri+Valparaiso&destination_place_id=ChIJF7v-USzhiZYRXtcN8BVM9D8&travelmode=walking">
+              <span class="dg-icon">🥘</span>
+              <div class="dg-body">
+                <strong>Restorán Capri</strong>
+                <p>Clásico histórico en Plaza Aníbal Pinto: platos tradicionales chilenos.</p>
+                <span class="dg-distance">~1,6 km · 24 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Mercado+Puerto+Valparaiso&destination_place_id=ChIJFzx1udLmiZYRCTPHpVYk-58&travelmode=walking">
+              <span class="dg-icon">🦐</span>
+              <div class="dg-body">
+                <strong>Mercado Puerto</strong>
+                <p>Mariscos frescos y la típica chorrillana al mediodía.</p>
+                <span class="dg-distance">~2,6 km · 39 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Fauna+Restaurant+Valparaiso&destination_place_id=ChIJ_9kO32ThiZYRANt8pU5ZJ8A&travelmode=walking">
+              <span class="dg-icon">🌊</span>
+              <div class="dg-body">
+                <strong>Fauna Restaurant</strong>
+                <p>Terraza en pasaje Dimalow con una de las mejores vistas de la bahía.</p>
+                <span class="dg-distance">~1,4 km · 20 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Flora+Bar+Restaurant+Valparaiso&destination_place_id=ChIJ08S_BQnhiZYRI4p4gDljV3s&travelmode=walking">
+              <span class="dg-icon">🌿</span>
+              <div class="dg-body">
+                <strong>Flora Bar Restaurant</strong>
+                <p>En las alturas del Cerro Alegre, entre plantas y una vista muy fotogénica.</p>
+                <span class="dg-distance">~1,4 km · 20 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+          </div>
+        </div>
+
+        <!-- ============ VIDA NOCTURNA ============ -->
+        <div class="dg-category">
+          <div class="dg-cat-header">
+            <h3>🎶 Vida Nocturna</h3>
+            <span>Bares y discotecas</span>
+          </div>
+          <div class="dg-grid">
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=La+Piedra+Feliz+Valparaiso&destination_place_id=ChIJ6VkLaCnhiZYRXk5fpuCgy_E&travelmode=walking">
+              <span class="dg-icon">💃</span>
+              <div class="dg-body">
+                <strong>La Piedra Feliz</strong>
+                <p>Ícono del Barrio Puerto. Varios ambientes: salsa, música en vivo y pista de baile.</p>
+                <span class="dg-distance">~1,8 km · 28 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Club+Pagano+Valparaiso&destination_place_id=ChIJo5Gx99XmiZYR19ovTy2Yqds&travelmode=walking">
+              <span class="dg-icon">🎧</span>
+              <div class="dg-body">
+                <strong>Club Pagano</strong>
+                <p>Referencia de música electrónica, con noches temáticas de techno y house.</p>
+                <span class="dg-distance">~2,1 km · 32 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=El+Huevo+Valparaiso&destination_place_id=ChIJb1gXIyjhiZYRaizsDj8-0dg&travelmode=walking">
+              <span class="dg-icon">🥁</span>
+              <div class="dg-body">
+                <strong>El Huevo</strong>
+                <p>Club underground en un antiguo galpón, ambiente bohemio y electrónica experimental.</p>
+                <span class="dg-distance">~1,7 km · 25 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Mero+Club+Valparaiso&destination_place_id=ChIJtx0YJy3hiZYR1h4f9U8tnv4&travelmode=walking">
+              <span class="dg-icon">🍸</span>
+              <div class="dg-body">
+                <strong>Mero Club</strong>
+                <p>Discoteca con terraza y ambiente relajado, ideal para empezar la noche.</p>
+                <span class="dg-distance">~2,4 km · 36 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=La+Tertulia+portena+Valparaiso&destination_place_id=ChIJkTxbcADhiZYRfaFArz6MJQM&travelmode=walking">
+              <span class="dg-icon">🎛️</span>
+              <div class="dg-body">
+                <strong>La Tertulia</strong>
+                <p>En un edificio histórico de Cerro Alegre, buena onda para tomar algo y comer.</p>
+                <span class="dg-distance">~1,5 km · 23 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/search/?api=1&query=bares+cerro+alegre+valparaiso">
+              <span class="dg-icon">🍹</span>
+              <div class="dg-body">
+                <strong>Bares de Cerro Alegre y Concepción</strong>
+                <p>La zona bohemia por excelencia: pisco sour y terrazas con vista.</p>
+                <span class="dg-distance">~1,7 km · 26 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Ver zona en el mapa</div>
+              </div>
+            </a>
+
+          </div>
+        </div>
+
+        <!-- ============ MIRADORES ============ -->
+        <div class="dg-category">
+          <div class="dg-cat-header">
+            <h3>🌅 Miradores</h3>
+            <span>Las mejores vistas</span>
+          </div>
+          <div class="dg-grid">
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Paseo+Gervasoni+Valparaiso&destination_place_id=ChIJQ0r4pi7hiZYRUDdubKpCT_Q&travelmode=walking">
+              <span class="dg-icon">📸</span>
+              <div class="dg-body">
+                <strong>Paseo Gervasoni</strong>
+                <p>Uno de los miradores más fotografiados, junto al Ascensor Concepción.</p>
+                <span class="dg-distance">~1,8 km · 26 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Paseo+Yugoslavo+Valparaiso&destination_place_id=ChIJj2EFzS3hiZYRH3nYkdRPL8M&travelmode=walking">
+              <span class="dg-icon">🌇</span>
+              <div class="dg-body">
+                <strong>Paseo Yugoslavo</strong>
+                <p>Perfecto al atardecer: se ven encenderse las luces del puerto y los barcos.</p>
+                <span class="dg-distance">~1,9 km · 28 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Paseo+Atkinson+Valparaiso&destination_place_id=ChIJN3huMSnhiZYR4gW-EuZpQPQ&travelmode=walking">
+              <span class="dg-icon">🏘️</span>
+              <div class="dg-body">
+                <strong>Paseo Atkinson</strong>
+                <p>Recorrido tranquilo entre casas patrimoniales de colores, con vistas puntuales al mar.</p>
+                <span class="dg-distance">~1,6 km · 24 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Paseo+21+de+Mayo+Valparaiso&destination_place_id=ChIJc9uea9LmiZYRTzlf-zryiCo&travelmode=walking">
+              <span class="dg-icon">🌅</span>
+              <div class="dg-body">
+                <strong>Paseo 21 de Mayo (Cerro Artillería)</strong>
+                <p>Probablemente la vista más amplia de toda la ciudad.</p>
+                <span class="dg-distance">~3,0 km · 45 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Mirador+Baron+Valparaiso&destination_place_id=ChIJg91Ubs_giZYR0z7bAwIJF94&travelmode=walking">
+              <span class="dg-icon">⛴️</span>
+              <div class="dg-body">
+                <strong>Mirador Diego Portales (Cerro Barón)</strong>
+                <p>Vista panorámica de casi todos los cerros y el movimiento de naves.</p>
+                <span class="dg-distance">~3,7 km · 55 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+            <a class="dg-card" target="_blank" rel="noopener"
+               href="https://www.google.com/maps/dir/?api=1&origin=Calle+Israel+108,+Valparaiso,+Chile&destination=Plaza+Bismarck+Valparaiso&destination_place_id=ChIJ_zcLWyXhiZYRPUO6civVtGo&travelmode=walking">
+              <span class="dg-icon">🌳</span>
+              <div class="dg-body">
+                <strong>Plaza Bismarck</strong>
+                <p>El más cercano al hostal: parada obligada camino a Cerro Concepción y Alegre.</p>
+                <span class="dg-distance">~0,7 km · 10 min</span>
+                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+              </div>
+            </a>
+
+          </div>
+        </div>
+
+        <p class="dg-note">
+          ¿Quieres coordinar una salida o pedir referencias específicas? Escríbenos por WhatsApp y te damos recomendaciones según lo que busques.
+        </p>
+      </div>
+    </section>
+    <!-- FIN: Dónde ir en Valparaíso -->
+
     <!-- Location Section -->
     <section id="ubicacion" class="location-section section-padding">
         <div class="container">
