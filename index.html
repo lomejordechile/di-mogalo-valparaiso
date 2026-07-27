@@ -29,6 +29,7 @@
                     <li><a href="#inicio" data-i18n="nav_home">Inicio</a></li>
                     <li><a href="#habitaciones" data-i18n="nav_rooms">Habitaciones y Tarifas</a></li>
                     <li><a href="#servicios" data-i18n="nav_services">Servicios</a></li>
+                    <li><a href="#donde-ir" data-i18n="nav_donde_ir">Dónde ir</a></li>
                     <li><a href="#ubicacion" data-i18n="nav_location">Ubicación</a></li>
                     <li><a href="#tips" data-i18n="nav_rules">Reglas</a></li>
                     <li><a href="#contacto" class="btn-cta-small" data-i18n="nav_book">Reservar</a></li>
@@ -37,9 +38,9 @@
             <div class="header-tools">
                 <!-- Select de Idioma -->
                 <select id="lang-selector" class="lang-selector">
-                    <option value="es">🇪🇸 ES</option>
-                    <option value="en">🇺🇸 EN</option>
-                    <option value="pt">🇧🇷 PT</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="en">🇺🇸 English</option>
+                    <option value="pt">🇧🇷 Português</option>
                 </select>
                 <!-- Icono de Facebook -->
                 <a href="https://web.facebook.com/profile.php?id=61577868307542" target="_blank" class="social-icon header-fb" aria-label="Facebook">
@@ -437,18 +438,18 @@
 
     <section id="donde-ir">
       <div class="dg-wrap">
-        <div class="dg-eyebrow">Guía Porteña</div>
-        <h2>Dónde ir en Valparaíso</h2>
-        <p class="dg-subtitle">
+        <div class="dg-eyebrow" data-i18n="donde_eyebrow">Guía Porteña</div>
+        <h2 data-i18n="donde_title">Dónde ir en Valparaíso</h2>
+        <p class="dg-subtitle" data-i18n="donde_subtitle">
           Toca cualquier lugar para abrir la ruta caminando en Google Maps directo desde el hostal.
         </p>
-        <p class="dg-address">Distancias aproximadas desde Calle Israel 108, Valparaíso</p>
+        <p class="dg-address" data-i18n="donde_address">Distancias aproximadas desde Calle Israel 108, Valparaíso</p>
 
         <!-- ============ RESTAURANTES ============ -->
         <div class="dg-category">
           <div class="dg-cat-header">
-            <h3>🍽️ Restaurantes</h3>
-            <span>Sabores del puerto</span>
+            <h3 data-i18n="donde_cat_rest">🍽️ Restaurantes</h3>
+            <span data-i18n="donde_cat_rest_sub">Sabores del puerto</span>
           </div>
           <div class="dg-grid">
 
@@ -459,7 +460,7 @@
                 <strong>Restaurante La Concepción</strong>
                 <p>En Cerro Alegre, dentro de un edificio patrimonial con vista al mar.</p>
                 <span class="dg-distance">~1,7 km · 25 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -470,7 +471,7 @@
                 <strong>Pasta e Vino</strong>
                 <p>Pastas y buena carta de vinos en un entorno sofisticado.</p>
                 <span class="dg-distance">~1,6 km · 25 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -481,7 +482,7 @@
                 <strong>Restorán Capri</strong>
                 <p>Clásico histórico en Plaza Aníbal Pinto: platos tradicionales chilenos.</p>
                 <span class="dg-distance">~1,6 km · 24 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -492,7 +493,7 @@
                 <strong>Mercado Puerto</strong>
                 <p>Mariscos frescos y la típica chorrillana al mediodía.</p>
                 <span class="dg-distance">~2,6 km · 39 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -503,7 +504,7 @@
                 <strong>Fauna Restaurant</strong>
                 <p>Terraza en pasaje Dimalow con una de las mejores vistas de la bahía.</p>
                 <span class="dg-distance">~1,4 km · 20 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -514,7 +515,7 @@
                 <strong>Flora Bar Restaurant</strong>
                 <p>En las alturas del Cerro Alegre, entre plantas y una vista muy fotogénica.</p>
                 <span class="dg-distance">~1,4 km · 20 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -524,8 +525,8 @@
         <!-- ============ VIDA NOCTURNA ============ -->
         <div class="dg-category">
           <div class="dg-cat-header">
-            <h3>🎶 Vida Nocturna</h3>
-            <span>Bares y discotecas</span>
+            <h3 data-i18n="donde_cat_night">🎶 Vida Nocturna</h3>
+            <span data-i18n="donde_cat_night_sub">Bares y discotecas</span>
           </div>
           <div class="dg-grid">
 
@@ -536,7 +537,7 @@
                 <strong>La Piedra Feliz</strong>
                 <p>Ícono del Barrio Puerto. Varios ambientes: salsa, música en vivo y pista de baile.</p>
                 <span class="dg-distance">~1,8 km · 28 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -547,7 +548,7 @@
                 <strong>Club Pagano</strong>
                 <p>Referencia de música electrónica, con noches temáticas de techno y house.</p>
                 <span class="dg-distance">~2,1 km · 32 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -558,7 +559,7 @@
                 <strong>El Huevo</strong>
                 <p>Club underground en un antiguo galpón, ambiente bohemio y electrónica experimental.</p>
                 <span class="dg-distance">~1,7 km · 25 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -569,7 +570,7 @@
                 <strong>Mero Club</strong>
                 <p>Discoteca con terraza y ambiente relajado, ideal para empezar la noche.</p>
                 <span class="dg-distance">~2,4 km · 36 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -580,7 +581,7 @@
                 <strong>La Tertulia</strong>
                 <p>En un edificio histórico de Cerro Alegre, buena onda para tomar algo y comer.</p>
                 <span class="dg-distance">~1,5 km · 23 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -591,7 +592,7 @@
                 <strong>Bares de Cerro Alegre y Concepción</strong>
                 <p>La zona bohemia por excelencia: pisco sour y terrazas con vista.</p>
                 <span class="dg-distance">~1,7 km · 26 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Ver zona en el mapa</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_zone"><span class="dg-pin">📍</span> Ver zona en el mapa</div>
               </div>
             </a>
 
@@ -601,8 +602,8 @@
         <!-- ============ MIRADORES ============ -->
         <div class="dg-category">
           <div class="dg-cat-header">
-            <h3>🌅 Miradores</h3>
-            <span>Las mejores vistas</span>
+            <h3 data-i18n="donde_cat_view">🌅 Miradores</h3>
+            <span data-i18n="donde_cat_view_sub">Las mejores vistas</span>
           </div>
           <div class="dg-grid">
 
@@ -613,7 +614,7 @@
                 <strong>Paseo Gervasoni</strong>
                 <p>Uno de los miradores más fotografiados, junto al Ascensor Concepción.</p>
                 <span class="dg-distance">~1,8 km · 26 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -624,7 +625,7 @@
                 <strong>Paseo Yugoslavo</strong>
                 <p>Perfecto al atardecer: se ven encenderse las luces del puerto y los barcos.</p>
                 <span class="dg-distance">~1,9 km · 28 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -635,7 +636,7 @@
                 <strong>Paseo Atkinson</strong>
                 <p>Recorrido tranquilo entre casas patrimoniales de colores, con vistas puntuales al mar.</p>
                 <span class="dg-distance">~1,6 km · 24 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -646,7 +647,7 @@
                 <strong>Paseo 21 de Mayo (Cerro Artillería)</strong>
                 <p>Probablemente la vista más amplia de toda la ciudad.</p>
                 <span class="dg-distance">~3,0 km · 45 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -657,7 +658,7 @@
                 <strong>Mirador Diego Portales (Cerro Barón)</strong>
                 <p>Vista panorámica de casi todos los cerros y el movimiento de naves.</p>
                 <span class="dg-distance">~3,7 km · 55 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
@@ -668,14 +669,14 @@
                 <strong>Plaza Bismarck</strong>
                 <p>El más cercano al hostal: parada obligada camino a Cerro Concepción y Alegre.</p>
                 <span class="dg-distance">~0,7 km · 10 min</span>
-                <div class="dg-maps-link"><span class="dg-pin">📍</span> Cómo llegar</div>
+                <div class="dg-maps-link" data-i18n-text="donde_maps_go"><span class="dg-pin">📍</span> Cómo llegar</div>
               </div>
             </a>
 
           </div>
         </div>
 
-        <p class="dg-note">
+        <p class="dg-note" data-i18n="donde_cta">
           ¿Quieres coordinar una salida o pedir referencias específicas? Escríbenos por WhatsApp y te damos recomendaciones según lo que busques.
         </p>
       </div>

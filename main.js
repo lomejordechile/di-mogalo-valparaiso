@@ -14,6 +14,20 @@ document.addEventListener('DOMContentLoaded', () => {
         el.textContent = translations[lang][key];
       }
     });
+    // Handle elements where only inner text (not child elements) should change
+    document.querySelectorAll('[data-i18n-text]').forEach(el => {
+      const key = el.getAttribute('data-i18n-text');
+      if (translations[lang] && translations[lang][key]) {
+        // Find the last text node and update it
+        const nodes = el.childNodes;
+        for (let i = nodes.length - 1; i >= 0; i--) {
+          if (nodes[i].nodeType === Node.TEXT_NODE) {
+            nodes[i].textContent = ' ' + translations[lang][key];
+            break;
+          }
+        }
+      }
+    });
   };
 
   fetch('data/data.json')
