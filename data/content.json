@@ -1,7 +1,7 @@
 {
-  "logo": "logo_clean.png",
-  "footer_logo": "logo_clean.png",
-  "hostal_name": "Hostal Di'Mogalo & Propiedades",
+  "logo": "logo_constructora.png",
+  "footer_logo": "logo_constructora.png",
+  "hostal_name": "Di'Mogalo Constructora & Propiedades",
   "hero": {
     "title": "Tu balcón privado sobre la magia de Valparaíso",
     "subtitle": "Vive una experiencia única en un ambiente de paz y equilibrio. La mejor vista del puerto te espera desde tu ventana.",
@@ -9,7 +9,7 @@
   },
   "exp_section_title": "Experiencia Di'Mogalo",
   "experience": {
-    "title": "“Hostal Di'Mogalo no es solo un lugar donde dormir… es el mirador donde el océano y los cerros se abrazan para ti.”",
+    "title": "“Di'Mogalo Constructora & Propiedades no es solo un lugar donde dormir… es el mirador donde el océano y los cerros se abrazan para ti.”",
     "items": [
       { "icon": "moon", "text": "Contempla el espectáculo de luces del puerto cada noche" },
       { "icon": "coffee", "text": "Desayuna frente al Pacífico en paz absoluta" },

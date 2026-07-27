@@ -1,13 +1,528 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard | Hostal Di'Mogalo</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Administrador | Di'Mogalo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg: #070e1a; --bg2: #0d1b2a; --bg3: #111e30; --bg4: #16263b;
+      --border: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.16);
+      --gold: #d4af37; --gold-light: #fde047; --gold-glow: rgba(212,175,55,0.15);
+      --green: #34d399; --red: #f87171;
+      --text: #e2e8f0; --text2: #94a3b8; --muted: #475569;
+      --sidebar-w: 260px; --radius: 12px; --transition: 0.2s ease;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: flex; min-height: 100vh; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
+
+    /* Sidebar */
+    .sidebar {
+      width: var(--sidebar-w); background: var(--bg2); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; position: fixed;
+      top: 0; left: 0; height: 100vh; z-index: 200; transition: transform 0.3s ease;
+    }
+    .sidebar-logo {
+      padding: 24px 20px 18px; border-bottom: 1px solid var(--border);
+      font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--gold);
+    }
+    .logo-sub { font-size: 0.65rem; display: block; color: var(--muted); font-family: 'Inter', sans-serif; font-weight: 400; margin-top: 2px; }
+    .nav-section-label { padding: 14px 20px 6px; font-size: 0.65rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .nav-menu { flex: 1; overflow-y: auto; padding: 8px 0; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px; padding: 10px 20px;
+      color: var(--text2); font-size: 0.84rem; cursor: pointer; transition: all var(--transition);
+      border-left: 3px solid transparent; margin: 1px 0;
+    }
+    .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+    .nav-item.active { color: var(--gold); border-left-color: var(--gold); background: var(--gold-glow); font-weight: 600; }
+    .nav-item i { width: 18px; text-align: center; font-size: 0.9rem; }
+    .sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    .gh-status { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
+    .status-dot.connected { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .status-dot.error { background: var(--red); box-shadow: 0 0 6px var(--red); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none; position: fixed; top: 14px; left: 14px; z-index: 300;
+      background: var(--bg2); border: 1px solid var(--border); color: var(--text);
+      padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 1rem;
+    }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 150; }
+
+    /* Main */
+    .main-content { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+    .topbar {
+      background: var(--bg2); border-bottom: 1px solid var(--border); padding: 14px 28px;
+      display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50;
+    }
+    .topbar-title { font-weight: 600; font-size: 0.95rem; }
+    .topbar-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .btn { border: none; padding: 8px 14px; border-radius: 8px; font-size: 0.82rem; cursor: pointer; transition: all var(--transition); display: flex; align-items: center; gap: 6px; font-family: 'Inter', sans-serif; }
+    .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: #000; font-weight: 700; font-size: 0.85rem; padding: 9px 20px; border-radius: 10px; }
+    .btn-gold:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(212,175,55,0.3); }
+    .btn-gold:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+    .btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border); }
+    .btn-ghost:hover { color: var(--text); border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
+    .lang-selector { background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; outline: none; font-family: 'Inter', sans-serif; font-size: 0.82rem; cursor: pointer; }
+    .lang-selector:focus { border-color: var(--gold); }
+
+    /* Login */
+    .login-wrap { width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(ellipse at 30% 40%, rgba(212,175,55,0.06) 0%, transparent 60%); }
+    .login-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 48px 40px; width: 100%; max-width: 420px; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+    .login-logo { text-align: center; margin-bottom: 8px; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.6rem; color: var(--gold); }
+    .login-sub { text-align: center; font-size: 0.85rem; color: var(--text2); margin-bottom: 32px; }
+    .input-group { position: relative; margin-bottom: 14px; }
+    .input-group i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+    .input-group input { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 12px 14px 12px 40px; border-radius: 10px; font-family: 'Inter', sans-serif; transition: border-color var(--transition); }
+    .input-group input:focus { outline: none; border-color: var(--gold); }
+    .login-hint { font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 12px; line-height: 1.5; }
+    .login-hint a { color: var(--gold); text-decoration: none; }
+    .btn-primary { width: 100%; background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: #000; border: none; padding: 13px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 0.95rem; font-family: 'Inter', sans-serif; transition: all var(--transition); }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,175,55,0.35); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Editor */
+    .editor-wrap { padding: 28px; flex: 1; }
+    .section-panel { display: none; animation: fadeIn 0.25s ease; }
+    .section-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .page-title { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; }
+    .page-subtitle { font-size: 0.82rem; color: var(--text2); margin-bottom: 24px; }
+    .fields-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+    .field-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; transition: border-color var(--transition); }
+    .field-box:hover { border-color: var(--border-hover); }
+    .field-box.full-width { grid-column: 1 / -1; }
+    .field-label { font-size: 0.72rem; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .field-input, .field-textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 10px 14px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.875rem; transition: border-color var(--transition); }
+    .field-input:focus, .field-textarea:focus { outline: none; border-color: var(--gold); }
+    .field-textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+    .field-hint { font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
+
+    /* Alerts */
+    .alert { padding: 12px 16px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .alert-success { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3); color: var(--green); }
+    .alert-error { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: var(--red); }
+    .alert-info { background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.25); color: var(--gold); }
+
+    /* Images */
+    .img-upload-box { border: 2px dashed var(--border); border-radius: 10px; padding: 16px; text-align: center; cursor: pointer; position: relative; overflow: hidden; transition: border-color var(--transition); }
+    .img-upload-box:hover { border-color: var(--gold); }
+    .img-upload-box input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .img-preview { width: 100%; max-height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+    .img-upload-hint { font-size: 0.78rem; color: var(--muted); }
+    .img-upload-icon { font-size: 1.5rem; margin-bottom: 8px; color: var(--muted); }
+
+    /* Contact */
+    .icon-field { display: flex; align-items: center; gap: 10px; }
+    .icon-badge { width: 36px; height: 36px; border-radius: 8px; background: var(--gold-glow); border: 1px solid rgba(212,175,55,0.2); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 0.9rem; flex-shrink: 0; }
+
+    /* Spinner */
+    .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(0,0,0,0.2); border-top-color: #000; border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hamburger { display: block; }
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .sidebar-overlay.open { display: block; }
+      .main-content { margin-left: 0; }
+      .topbar { padding: 14px 60px; }
+      .editor-wrap { padding: 20px 16px; }
+      .fields-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <!-- Include the script that builds the page and powers Decap CMS -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+<div id="app">
+
+  <!-- LOGIN -->
+  <div class="login-wrap" v-if="!isLoggedIn">
+    <div class="login-box">
+      <div class="login-logo">&#x1F3E8; Di'Mogalo</div>
+      <div class="login-sub">Panel de Administraci&oacute;n del Hostal</div>
+      <div class="input-group">
+        <i class="fa-solid fa-key"></i>
+        <input type="password" v-model="token" placeholder="Token de GitHub (ghp_...)" @keydown.enter="login">
+      </div>
+      <button class="btn-primary" @click="login" :disabled="loading">
+        <span v-if="loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Conectando...</span>
+        <span v-else><i class="fa-solid fa-right-to-bracket"></i> Entrar al Panel</span>
+      </button>
+      <div class="alert alert-error" v-if="error" style="margin-top:16px;">
+        <i class="fa-solid fa-circle-exclamation"></i> {{ error }}
+      </div>
+      <p class="login-hint">
+        Necesitas un <a href="https://github.com/settings/tokens" target="_blank">Token de GitHub</a>
+        con permiso <strong>repo</strong> para guardar cambios en vivo.
+      </p>
+    </div>
+  </div>
+
+  <!-- ADMIN PANEL -->
+  <template v-else>
+    <button class="hamburger" @click="sidebarOpen = !sidebarOpen">
+      <i :class="sidebarOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
+    </button>
+    <div class="sidebar-overlay" :class="{ open: sidebarOpen }" @click="sidebarOpen = false"></div>
+
+    <aside class="sidebar" :class="{ open: sidebarOpen }">
+      <div class="sidebar-logo">
+        &#x1F3E8; Di'Mogalo<span class="logo-sub">Administraci&oacute;n</span>
+      </div>
+      <nav class="nav-menu">
+        <div class="nav-section-label">Contenido del Sitio</div>
+        <div v-for="sec in sections" :key="sec.id"
+          class="nav-item" :class="{ active: activeSection === sec.id }"
+          @click="activeSection = sec.id; sidebarOpen = false">
+          <i :class="sec.icon"></i> {{ sec.label }}
+        </div>
+        <div class="nav-section-label">Configuraci&oacute;n</div>
+        <div class="nav-item" :class="{ active: activeSection === 'contact' }"
+          @click="activeSection = 'contact'; sidebarOpen = false">
+          <i class="fa-solid fa-address-card"></i> Contacto &amp; Redes
+        </div>
+        <div class="nav-item" :class="{ active: activeSection === 'images' }"
+          @click="activeSection = 'images'; sidebarOpen = false">
+          <i class="fa-solid fa-image"></i> Im&aacute;genes
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="gh-status">
+          <div class="status-dot" :class="statusDot"></div>
+          <span>{{ statusText }}</span>
+        </div>
+        <div>lomejordechile/di-mogalo-valparaiso</div>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <div class="topbar">
+        <div class="topbar-title">
+          <i :class="currentSectionIcon" style="color:var(--gold); margin-right:8px;"></i>
+          {{ currentSectionLabel }}
+        </div>
+        <div class="topbar-actions">
+          <select v-model="currentLang" class="lang-selector"
+            v-if="activeSection !== 'images' && activeSection !== 'contact'">
+            <option value="es">ES Espanol</option>
+            <option value="en">EN English</option>
+            <option value="pt">PT Portugues</option>
+          </select>
+          <a :href="siteUrl" target="_blank" class="btn btn-ghost" style="text-decoration:none;">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Sitio
+          </a>
+          <button class="btn btn-ghost" @click="logout">
+            <i class="fa-solid fa-right-from-bracket"></i> Salir
+          </button>
+          <button class="btn btn-gold" @click="saveChanges" :disabled="saving">
+            <span class="spinner" v-if="saving"></span>
+            <i class="fa-solid fa-cloud-arrow-up" v-else></i>
+            {{ saving ? 'Guardando...' : 'Guardar Cambios' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="editor-wrap">
+        <div class="alert alert-success" v-if="successMsg">
+          <i class="fa-solid fa-circle-check"></i> {{ successMsg }}
+        </div>
+        <div class="alert alert-error" v-if="error && isLoggedIn">
+          <i class="fa-solid fa-circle-exclamation"></i> {{ error }}
+        </div>
+        <div class="alert alert-info" v-if="pendingImages.length > 0">
+          <i class="fa-solid fa-clock"></i> {{ pendingImages.length }} imagen(es) pendiente(s) &mdash; se subiran al guardar.
+        </div>
+
+        <div v-if="loading" style="text-align:center; padding:60px; color:var(--text2);">
+          <i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem; color:var(--gold);"></i>
+          <p style="margin-top:12px;">Cargando contenido desde GitHub...</p>
+        </div>
+
+        <template v-else-if="data">
+
+          <!-- IMAGES -->
+          <div class="section-panel" :class="{ active: activeSection === 'images' }">
+            <div class="page-title">Imagenes del Sitio</div>
+            <div class="page-subtitle">Haz clic en una imagen para reemplazarla. Se subira a GitHub al presionar "Guardar Cambios".</div>
+            <div class="fields-grid">
+              <div class="field-box" v-for="(val, key) in data.images" :key="key">
+                <div class="field-label">{{ key }}</div>
+                <div class="img-upload-box">
+                  <input type="file" accept="image/*" @change="e => handleImageUpload(e, key)">
+                  <img :src="previewUrl(val)" class="img-preview" v-if="val">
+                  <div class="img-upload-icon" v-if="!val"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                  <div class="img-upload-hint">{{ val ? 'Clic para cambiar imagen' : 'Clic para subir imagen' }}</div>
+                </div>
+                <div class="field-hint" v-if="val">Archivo actual: {{ val }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CONTACT -->
+          <div class="section-panel" :class="{ active: activeSection === 'contact' }">
+            <div class="page-title">Contacto &amp; Redes Sociales</div>
+            <div class="page-subtitle">Estos datos aparecen en el footer y botones de reserva del sitio web.</div>
+            <div class="fields-grid" v-if="data.contact">
+              <div class="field-box">
+                <div class="field-label">Numero WhatsApp</div>
+                <div class="icon-field">
+                  <div class="icon-badge" style="background:rgba(37,211,102,0.1); border-color:rgba(37,211,102,0.2); color:#25d466;">
+                    <i class="fa-brands fa-whatsapp"></i>
+                  </div>
+                  <input class="field-input" v-model="data.contact.whatsapp" placeholder="+569 9999 9999">
+                </div>
+                <div class="field-hint">Incluye el codigo de pais. Ej: +56 9XXXXXXXX</div>
+              </div>
+              <div class="field-box">
+                <div class="field-label">URL de Facebook</div>
+                <div class="icon-field">
+                  <div class="icon-badge" style="background:rgba(24,119,242,0.1); border-color:rgba(24,119,242,0.2); color:#1877f2;">
+                    <i class="fa-brands fa-facebook-f"></i>
+                  </div>
+                  <input class="field-input" v-model="data.contact.facebook" placeholder="https://facebook.com/...">
+                </div>
+              </div>
+              <div class="field-box">
+                <div class="field-label">Direccion</div>
+                <div class="icon-field">
+                  <div class="icon-badge"><i class="fa-solid fa-map-marker-alt"></i></div>
+                  <input class="field-input" v-model="data.contact.address" placeholder="Calle, Ciudad">
+                </div>
+              </div>
+              <div class="field-box full-width">
+                <div class="field-label">URL del Video o Mapa Embed</div>
+                <input class="field-input" v-model="data.contact.gmaps_embed" placeholder="https://www.youtube.com/embed/...">
+                <div class="field-hint">URL de YouTube embed o de Google Maps iframe para la seccion de ubicacion.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEXT SECTIONS -->
+          <div class="section-panel" v-for="sec in textSections" :key="sec.id"
+            :class="{ active: activeSection === sec.id }">
+            <div class="page-title">{{ sec.label }}</div>
+            <div class="page-subtitle">Idioma activo: <strong>{{ langLabel }}</strong> &mdash; Cambialo en la barra superior.</div>
+            <div class="fields-grid">
+              <div class="field-box" v-for="key in sec.keys" :key="key"
+                :class="{ 'full-width': isTextarea(key) }">
+                <div class="field-label">{{ keyLabel(key) }}</div>
+                <textarea v-if="isTextarea(key)" class="field-textarea"
+                  v-model="data.translations[currentLang][key]"></textarea>
+                <input v-else class="field-input"
+                  v-model="data.translations[currentLang][key]">
+              </div>
+            </div>
+          </div>
+
+        </template>
+      </div>
+    </div>
+  </template>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+const { createApp, ref, computed } = Vue;
+createApp({
+  setup() {
+    const token      = ref('');
+    const isLoggedIn = ref(false);
+    const loading    = ref(false);
+    const saving     = ref(false);
+    const error      = ref('');
+    const successMsg = ref('');
+    const data       = ref(null);
+    const fileSha    = ref('');
+    const currentLang   = ref('es');
+    const activeSection = ref('hero');
+    const pendingImages = ref([]);
+    const sidebarOpen   = ref(false);
+    const ghConnected   = ref(null);
+
+    const siteUrl   = 'https://lomejordechile.github.io/di-mogalo-valparaiso/';
+    const REPO      = 'lomejordechile/di-mogalo-valparaiso';
+    const DATA_PATH = 'data/data.json';
+    const BRANCH    = 'main';
+
+    const sections = [
+      { id:'hero',       label:'Inicio & Hero',         icon:'fa-solid fa-house' },
+      { id:'rooms',      label:'Habitaciones',           icon:'fa-solid fa-bed' },
+      { id:'experience', label:'Experiencia',            icon:'fa-solid fa-star' },
+      { id:'tips',       label:'Tips & Turismo',         icon:'fa-solid fa-map-location-dot' },
+      { id:'services',   label:'Servicios',              icon:'fa-solid fa-concierge-bell' },
+      { id:'reviews',    label:'Resenas',                icon:'fa-solid fa-comments' },
+      { id:'footer',     label:'Footer & CTA',           icon:'fa-solid fa-file-lines' },
+    ];
+
+    const textSections = [
+      { id:'hero',       label:'Inicio & Hero',
+        keys:['nav_home','nav_rooms','nav_services','nav_location','nav_rules','nav_book','hero_title','hero_sub','btn_whatsapp','btn_rooms'] },
+      { id:'rooms',      label:'Habitaciones',
+        keys:['rooms_title','r1_title','r1_desc','r1_b1','r1_b2','r1_b3','r1_b4','btn_avail'] },
+      { id:'experience', label:'Experiencia',
+        keys:['exp_tag','exp_title','exp_f1','exp_f2','exp_f3'] },
+      { id:'tips',       label:'Tips & Turismo',
+        keys:['tips_tag','tips_title','tips_desc','t1_t','t1_d','t2_t','t2_d','t3_t','t3_d','t4_t','t4_d'] },
+      { id:'services',   label:'Servicios',
+        keys:['serv_title','s1_t','s1_d','s2_t','s2_d','s3_t','s3_d','s4_t','s4_d'] },
+      { id:'reviews',    label:'Resenas',
+        keys:['rev_tag','rev_title','rev1_t','rev2_t','rev3_t'] },
+      { id:'footer',     label:'Footer & CTA',
+        keys:['cta_title','cta_desc','btn_book_now','footer_slogan','footer_links','footer_contact','footer_rights','loc_title','loc_subtitle','loc_desc'] }
+    ];
+
+    const textareaKeys = new Set([
+      'hero_sub','exp_title','tips_desc','t1_d','t2_d','t3_d','t4_d',
+      's1_d','s2_d','s3_d','s4_d','rev1_t','rev2_t','rev3_t','cta_desc','loc_desc','r1_desc'
+    ]);
+    const isTextarea = (k) => textareaKeys.has(k);
+
+    const KEY_LABELS = {
+      nav_home:'Nav - Inicio', nav_rooms:'Nav - Habitaciones', nav_services:'Nav - Servicios',
+      nav_location:'Nav - Ubicacion', nav_rules:'Nav - Reglas', nav_book:'Nav - Reservar',
+      hero_title:'Titulo Principal', hero_sub:'Subtitulo Hero',
+      btn_whatsapp:'Boton WhatsApp', btn_rooms:'Boton Habitaciones',
+      exp_tag:'Etiqueta Seccion', exp_title:'Cita / Quote', exp_f1:'Feature 1', exp_f2:'Feature 2', exp_f3:'Feature 3',
+      rooms_title:'Titulo Seccion Habitaciones', r1_title:'Titulo Habitacion', r1_desc:'Descripcion',
+      r1_b1:'Beneficio 1', r1_b2:'Beneficio 2', r1_b3:'Beneficio 3', r1_b4:'Beneficio 4',
+      btn_avail:'Boton Disponibilidad',
+      tips_tag:'Etiqueta Seccion', tips_title:'Titulo Tips', tips_desc:'Descripcion Intro',
+      t1_t:'Tip 1 - Titulo', t1_d:'Tip 1 - Descripcion', t2_t:'Tip 2 - Titulo', t2_d:'Tip 2 - Descripcion',
+      t3_t:'Tip 3 - Titulo', t3_d:'Tip 3 - Descripcion', t4_t:'Tip 4 - Titulo', t4_d:'Tip 4 - Descripcion',
+      serv_title:'Titulo Servicios', s1_t:'Servicio 1 - Titulo', s1_d:'Servicio 1 - Descripcion',
+      s2_t:'Servicio 2 - Titulo', s2_d:'Servicio 2 - Descripcion',
+      s3_t:'Servicio 3 - Titulo', s3_d:'Servicio 3 - Descripcion',
+      s4_t:'Servicio 4 - Titulo', s4_d:'Servicio 4 - Descripcion',
+      rev_tag:'Etiqueta Resenas', rev_title:'Titulo Seccion', rev1_t:'Resena 1', rev2_t:'Resena 2', rev3_t:'Resena 3',
+      cta_title:'Titulo CTA', cta_desc:'Descripcion CTA', btn_book_now:'Boton Reservar',
+      footer_slogan:'Slogan Footer', footer_links:'Titulo Links', footer_contact:'Titulo Contacto',
+      footer_rights:'Derechos de Autor', loc_title:'Titulo Ubicacion',
+      loc_subtitle:'Subtitulo Ubicacion', loc_desc:'Descripcion Ubicacion'
+    };
+    const keyLabel = (k) => KEY_LABELS[k] || k;
+
+    const statusDot  = computed(() => ghConnected.value === true ? 'connected' : ghConnected.value === false ? 'error' : '');
+    const statusText = computed(() => ghConnected.value === true ? 'Conectado a GitHub' : ghConnected.value === false ? 'Error de conexion' : 'No autenticado');
+    const langLabel  = computed(() => ({ es:'Espanol', en:'English', pt:'Portugues' }[currentLang.value]));
+    const currentSectionLabel = computed(() => {
+      if (activeSection.value === 'contact') return 'Contacto & Redes Sociales';
+      if (activeSection.value === 'images')  return 'Imagenes del Sitio';
+      return sections.find(s => s.id === activeSection.value)?.label || '';
+    });
+    const currentSectionIcon = computed(() => {
+      if (activeSection.value === 'contact') return 'fa-solid fa-address-card';
+      if (activeSection.value === 'images')  return 'fa-solid fa-image';
+      return sections.find(s => s.id === activeSection.value)?.icon || 'fa-solid fa-circle';
+    });
+
+    const ghHeaders = () => ({
+      'Authorization': `token ${token.value}`,
+      'Accept': 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json'
+    });
+
+    const fetchContent = async () => {
+      const res = await fetch(
+        `https://api.github.com/repos/${REPO}/contents/${DATA_PATH}?ref=${BRANCH}&t=${Date.now()}`,
+        { headers: ghHeaders() }
+      );
+      if (!res.ok) throw new Error(res.status === 401 ? 'Token invalido o sin permisos repo.' : 'No se pudo conectar a GitHub.');
+      const d = await res.json();
+      fileSha.value = d.sha;
+      return JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g,'')))));
+    };
+
+    const login = async () => {
+      if (!token.value.trim()) { error.value = 'Ingresa tu token de GitHub.'; return; }
+      loading.value = true; error.value = '';
+      try {
+        data.value = await fetchContent();
+        if (!data.value.contact) {
+          data.value.contact = { whatsapp:'', facebook:'', address:'', gmaps_embed:'' };
+        }
+        isLoggedIn.value = true;
+        ghConnected.value = true;
+        sessionStorage.setItem('gh_token_di_mogalo', token.value);
+      } catch(e) { error.value = e.message; ghConnected.value = false; }
+      loading.value = false;
+    };
+
+    const logout = () => {
+      sessionStorage.removeItem('gh_token_di_mogalo');
+      isLoggedIn.value = false; data.value = null; ghConnected.value = null;
+    };
+
+    const handleImageUpload = (e, imgKey) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        const base64 = evt.target.result.split(',')[1];
+        const ext = file.name.split('.').pop().toLowerCase();
+        const newFilename = `${imgKey}_${Date.now()}.${ext}`;
+        data.value.images[imgKey] = newFilename;
+        pendingImages.value = pendingImages.value.filter(i => !i.filename.startsWith(imgKey));
+        pendingImages.value.push({ filename: newFilename, base64 });
+      };
+      reader.readAsDataURL(file);
+    };
+
+    const previewUrl = (path) => {
+      if (!path) return '';
+      if (path.startsWith('data:')) return path;
+      return `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${path}`;
+    };
+
+    const saveChanges = async () => {
+      saving.value = true; error.value = ''; successMsg.value = '';
+      try {
+        for (const img of pendingImages.value) {
+          const shaRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${img.filename}?ref=${BRANCH}`, { headers: ghHeaders() });
+          let body = { message: `Upload: ${img.filename}`, content: img.base64, branch: BRANCH };
+          if (shaRes.ok) { const sd = await shaRes.json(); body.sha = sd.sha; }
+          const upRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${img.filename}`, {
+            method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body)
+          });
+          if (!upRes.ok) throw new Error(`Error subiendo ${img.filename}`);
+        }
+        pendingImages.value = [];
+        const jsonStr = JSON.stringify(data.value, null, 2);
+        const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
+        const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}`, {
+          method: 'PUT', headers: ghHeaders(),
+          body: JSON.stringify({ message: 'Update content via Admin Dashboard', content: encoded, sha: fileSha.value, branch: BRANCH })
+        });
+        if (!res.ok) { const eb = await res.json(); throw new Error(eb.message || 'No se pudo guardar.'); }
+        const rd = await res.json();
+        fileSha.value = rd.content.sha;
+        ghConnected.value = true;
+        successMsg.value = 'Guardado exitosamente. Los cambios tardaran 1-2 minutos en reflejarse en el sitio.';
+        setTimeout(() => successMsg.value = '', 7000);
+      } catch(e) { error.value = e.message; ghConnected.value = false; }
+      saving.value = false;
+    };
+
+    const saved = sessionStorage.getItem('gh_token_di_mogalo');
+    if (saved) { token.value = saved; login(); }
+
+    return {
+      token, isLoggedIn, loading, saving, error, successMsg,
+      data, currentLang, activeSection, sections, textSections,
+      isTextarea, keyLabel, login, logout, saveChanges,
+      handleImageUpload, previewUrl, sidebarOpen, ghConnected,
+      statusDot, statusText, langLabel, currentSectionLabel, currentSectionIcon, siteUrl,
+      pendingImages
+    };
+  }
+}).mount('#app');
+</script>
 </body>
 </html>
