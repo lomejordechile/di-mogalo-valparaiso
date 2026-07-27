@@ -1,6 +1,6 @@
 {
-  "logo": "logo_nuevo_footer.jpg",
-  "footer_logo": "logo_nuevo_footer.jpg",
+  "logo": "logo_dimogalo.png",
+  "footer_logo": "logo_dimogalo.png",
   "hostal_name": "Di'Mogalo Constructora & Propiedades",
   "hero": {
     "title": "Tu balcón privado sobre la magia de Valparaíso",
@@ -18,7 +18,7 @@
   },
   "gallery": [
     { "image": "galeria1_mejorada.jpg", "caption": "Despierta con la postal perfecta del puerto de Valparaíso directamente desde tu habitación." },
-    { "image": "galeria2_mejorada.jpg", "caption": "Tu hogar en las alturas: arquitectura auténtica y una ubicación privilegiada en los cerros." }
+    { "image": "vista_nocturna.jpg", "caption": "Tu hogar en las alturas: la impresionante vista nocturna de la bahía de Valparaíso bajo la luna llena." }
   ],
   "rooms_title_text": "Nuestras Habitaciones y Tarifas",
   "rooms": [
