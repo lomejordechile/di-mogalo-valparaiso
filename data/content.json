@@ -17,8 +17,8 @@
     ]
   },
   "gallery": [
-    { "image": "vista_puerto.jpg", "caption": "Despierta con la postal perfecta del puerto de Valparaíso directamente desde tu habitación." },
-    { "image": "exterior_hostal_arriba.jpg", "caption": "Tu hogar en las alturas: arquitectura auténtica y una ubicación privilegiada en los cerros." }
+    { "image": "galeria1_mejorada.jpg", "caption": "Despierta con la postal perfecta del puerto de Valparaíso directamente desde tu habitación." },
+    { "image": "galeria2_mejorada.jpg", "caption": "Tu hogar en las alturas: arquitectura auténtica y una ubicación privilegiada en los cerros." }
   ],
   "rooms_title_text": "Nuestras Habitaciones y Tarifas",
   "rooms": [
