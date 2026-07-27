@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Administrador | Di'Mogalo</title>
+  <title>Panel de Administración | Di'Mogalo Constructora & Propiedades</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     :root {
       --bg: #070e1a; --bg2: #0d1b2a; --bg3: #111e30; --bg4: #16263b;
-      --border: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.16);
+      --border: rgba(255,255,255,0.08); --border-hover: rgba(212,175,55,0.4);
       --gold: #d4af37; --gold-light: #fde047; --gold-glow: rgba(212,175,55,0.15);
-      --green: #34d399; --red: #f87171;
+      --green: #34d399; --red: #f87171; --blue: #38bdf8;
       --text: #e2e8f0; --text2: #94a3b8; --muted: #475569;
-      --sidebar-w: 260px; --radius: 12px; --transition: 0.2s ease;
+      --sidebar-w: 270px; --radius: 12px; --transition: 0.2s ease;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; display: flex; min-height: 100vh; }
-    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
 
@@ -28,27 +28,29 @@
       top: 0; left: 0; height: 100vh; z-index: 200; transition: transform 0.3s ease;
     }
     .sidebar-logo {
-      padding: 24px 20px 18px; border-bottom: 1px solid var(--border);
-      font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--gold);
+      padding: 22px 20px; border-bottom: 1px solid var(--border);
+      font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.15rem; color: var(--gold);
+      display: flex; align-items: center; gap: 10px;
     }
     .logo-sub { font-size: 0.65rem; display: block; color: var(--muted); font-family: 'Inter', sans-serif; font-weight: 400; margin-top: 2px; }
     .nav-section-label { padding: 14px 20px 6px; font-size: 0.65rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
     .nav-menu { flex: 1; overflow-y: auto; padding: 8px 0; }
     .nav-item {
-      display: flex; align-items: center; gap: 10px; padding: 10px 20px;
+      display: flex; align-items: center; gap: 10px; padding: 11px 20px;
       color: var(--text2); font-size: 0.84rem; cursor: pointer; transition: all var(--transition);
       border-left: 3px solid transparent; margin: 1px 0;
     }
     .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.04); }
     .nav-item.active { color: var(--gold); border-left-color: var(--gold); background: var(--gold-glow); font-weight: 600; }
-    .nav-item i { width: 18px; text-align: center; font-size: 0.9rem; }
+    .nav-item i { width: 20px; text-align: center; font-size: 0.95rem; }
     .sidebar-footer { padding: 16px 20px; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
     .gh-status { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
     .status-dot.connected { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .status-dot.local { background: var(--blue); box-shadow: 0 0 6px var(--blue); }
     .status-dot.error { background: var(--red); box-shadow: 0 0 6px var(--red); }
 
-    /* Hamburger */
+    /* Hamburger & Mobile Overlay */
     .hamburger {
       display: none; position: fixed; top: 14px; left: 14px; z-index: 300;
       background: var(--bg2); border: 1px solid var(--border); color: var(--text);
@@ -56,54 +58,85 @@
     }
     .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 150; }
 
-    /* Main */
+    /* Main Container */
     .main-content { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
     .topbar {
       background: var(--bg2); border-bottom: 1px solid var(--border); padding: 14px 28px;
       display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(10px);
     }
-    .topbar-title { font-weight: 600; font-size: 0.95rem; }
-    .topbar-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .topbar-title { font-weight: 600; font-size: 0.98rem; display: flex; align-items: center; gap: 8px; }
+    .topbar-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .btn { border: none; padding: 8px 14px; border-radius: 8px; font-size: 0.82rem; cursor: pointer; transition: all var(--transition); display: flex; align-items: center; gap: 6px; font-family: 'Inter', sans-serif; }
-    .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: #000; font-weight: 700; font-size: 0.85rem; padding: 9px 20px; border-radius: 10px; }
-    .btn-gold:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(212,175,55,0.3); }
+    .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: #000; font-weight: 700; font-size: 0.85rem; padding: 9px 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(212,175,55,0.2); }
+    .btn-gold:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 4px 18px rgba(212,175,55,0.4); }
     .btn-gold:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
     .btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border); }
     .btn-ghost:hover { color: var(--text); border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
-    .lang-selector { background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; outline: none; font-family: 'Inter', sans-serif; font-size: 0.82rem; cursor: pointer; }
-    .lang-selector:focus { border-color: var(--gold); }
+    .btn-danger { background: rgba(248,113,113,0.15); color: var(--red); border: 1px solid rgba(248,113,113,0.3); }
+    .btn-danger:hover { background: rgba(248,113,113,0.25); }
+    .btn-success { background: rgba(52,211,153,0.15); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
+    .btn-success:hover { background: rgba(52,211,153,0.25); }
 
-    /* Login */
-    .login-wrap { width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(ellipse at 30% 40%, rgba(212,175,55,0.06) 0%, transparent 60%); }
-    .login-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 48px 40px; width: 100%; max-width: 420px; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
-    .login-logo { text-align: center; margin-bottom: 8px; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.6rem; color: var(--gold); }
-    .login-sub { text-align: center; font-size: 0.85rem; color: var(--text2); margin-bottom: 32px; }
-    .input-group { position: relative; margin-bottom: 14px; }
+    /* Login Screen */
+    .login-wrap { width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(ellipse at 50% 30%, rgba(212,175,55,0.08) 0%, transparent 70%); }
+    .login-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 44px 36px; width: 100%; max-width: 440px; box-shadow: 0 24px 60px rgba(0,0,0,0.6); }
+    .login-logo { text-align: center; margin-bottom: 6px; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.6rem; color: var(--gold); }
+    .login-sub { text-align: center; font-size: 0.85rem; color: var(--text2); margin-bottom: 28px; }
+    .input-group { position: relative; margin-bottom: 16px; }
     .input-group i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); }
     .input-group input { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 12px 14px 12px 40px; border-radius: 10px; font-family: 'Inter', sans-serif; transition: border-color var(--transition); }
     .input-group input:focus { outline: none; border-color: var(--gold); }
-    .login-hint { font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 12px; line-height: 1.5; }
+    .login-hint { font-size: 0.75rem; color: var(--muted); text-align: center; margin-top: 16px; line-height: 1.5; }
     .login-hint a { color: var(--gold); text-decoration: none; }
     .btn-primary { width: 100%; background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: #000; border: none; padding: 13px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 0.95rem; font-family: 'Inter', sans-serif; transition: all var(--transition); }
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(212,175,55,0.35); }
-    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .divider { display: flex; align-items: center; margin: 20px 0; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--border); }
+    .divider span { padding: 0 10px; }
 
-    /* Editor */
-    .editor-wrap { padding: 28px; flex: 1; }
+    /* Editor Layout */
+    .editor-wrap { padding: 28px; flex: 1; max-width: 1300px; margin: 0 auto; width: 100%; }
     .section-panel { display: none; animation: fadeIn 0.25s ease; }
     .section-panel.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
-    .page-title { font-family: 'Outfit', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; }
-    .page-subtitle { font-size: 0.82rem; color: var(--text2); margin-bottom: 24px; }
-    .fields-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-    .field-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; transition: border-color var(--transition); }
+    
+    .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px; }
+    .page-title { font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 700; color: var(--text); }
+    .page-subtitle { font-size: 0.82rem; color: var(--text2); margin-top: 4px; }
+    
+    .fields-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+    .field-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: border-color var(--transition); }
     .field-box:hover { border-color: var(--border-hover); }
     .field-box.full-width { grid-column: 1 / -1; }
-    .field-label { font-size: 0.72rem; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .field-input, .field-textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 10px 14px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.875rem; transition: border-color var(--transition); }
-    .field-input:focus, .field-textarea:focus { outline: none; border-color: var(--gold); }
+    .field-label { font-size: 0.72rem; font-weight: 700; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; display: flex; justify-content: space-between; align-items: center; }
+    .field-input, .field-textarea, .field-select { width: 100%; background: var(--bg3); border: 1px solid var(--border); color: var(--text); padding: 10px 14px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.875rem; transition: border-color var(--transition); }
+    .field-input:focus, .field-textarea:focus, .field-select:focus { outline: none; border-color: var(--gold); }
     .field-textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
     .field-hint { font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
+
+    /* Card List Items (Rooms, Gallery, Services, Tips, Reviews) */
+    .items-container { display: flex; flex-direction: column; gap: 20px; }
+    .card-item { background: var(--bg2); border: 1px solid var(--border); border-radius: 14px; padding: 22px; position: relative; transition: border-color var(--transition); }
+    .card-item:hover { border-color: var(--border-hover); }
+    .card-item-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+    .card-item-title { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--text); display: flex; align-items: center; gap: 8px; }
+    .card-item-body { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+
+    /* Feature Pills */
+    .features-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .feature-pill { background: var(--bg3); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; font-size: 0.78rem; display: flex; align-items: center; gap: 6px; }
+    .feature-pill input { background: transparent; border: none; color: var(--text); font-size: 0.78rem; outline: none; width: 140px; }
+    .feature-pill i { cursor: pointer; color: var(--muted); transition: color 0.2s; }
+    .feature-pill i:hover { color: var(--red); }
+
+    /* Image Selector & Upload */
+    .img-upload-box { border: 2px dashed var(--border); border-radius: 10px; padding: 14px; text-align: center; cursor: pointer; position: relative; overflow: hidden; transition: border-color var(--transition); background: var(--bg3); }
+    .img-upload-box:hover { border-color: var(--gold); }
+    .img-upload-box input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; z-index: 5; }
+    .img-preview { width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px; margin-bottom: 8px; }
+    .img-upload-hint { font-size: 0.75rem; color: var(--text2); }
+    .img-upload-icon { font-size: 1.6rem; margin-bottom: 6px; color: var(--gold); }
 
     /* Alerts */
     .alert { padding: 12px 16px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
@@ -111,114 +144,132 @@
     .alert-error { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.3); color: var(--red); }
     .alert-info { background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.25); color: var(--gold); }
 
-    /* Images */
-    .img-upload-box { border: 2px dashed var(--border); border-radius: 10px; padding: 16px; text-align: center; cursor: pointer; position: relative; overflow: hidden; transition: border-color var(--transition); }
-    .img-upload-box:hover { border-color: var(--gold); }
-    .img-upload-box input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-    .img-preview { width: 100%; max-height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
-    .img-upload-hint { font-size: 0.78rem; color: var(--muted); }
-    .img-upload-icon { font-size: 1.5rem; margin-bottom: 8px; color: var(--muted); }
-
-    /* Contact */
-    .icon-field { display: flex; align-items: center; gap: 10px; }
-    .icon-badge { width: 36px; height: 36px; border-radius: 8px; background: var(--gold-glow); border: 1px solid rgba(212,175,55,0.2); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 0.9rem; flex-shrink: 0; }
+    /* Media Grid */
+    .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+    .media-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; text-align: center; padding: 8px; position: relative; }
+    .media-card img { width: 100%; height: 120px; object-fit: cover; border-radius: 6px; }
+    .media-card-name { font-size: 0.72rem; color: var(--text2); margin-top: 6px; word-break: break-all; }
 
     /* Spinner */
     .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(0,0,0,0.2); border-top-color: #000; border-radius: 50%; animation: spin 0.7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Responsive */
+    /* Icon Picker Mini Modal */
+    .icon-picker-wrap { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .icon-chip { padding: 4px 8px; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; font-size: 0.75rem; cursor: pointer; color: var(--text2); }
+    .icon-chip:hover, .icon-chip.active { border-color: var(--gold); color: var(--gold); }
+
     @media (max-width: 768px) {
       .hamburger { display: block; }
       .sidebar { transform: translateX(-100%); }
       .sidebar.open { transform: translateX(0); }
       .sidebar-overlay.open { display: block; }
       .main-content { margin-left: 0; }
-      .topbar { padding: 14px 60px; }
-      .editor-wrap { padding: 20px 16px; }
+      .topbar { padding: 14px 18px 14px 60px; }
+      .editor-wrap { padding: 20px 14px; }
       .fields-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-<div id="app">
+<div id="app" style="width:100%;">
 
-  <!-- LOGIN -->
+  <!-- LOGIN / ACCESO -->
   <div class="login-wrap" v-if="!isLoggedIn">
     <div class="login-box">
-      <div class="login-logo">&#x1F3E8; Di'Mogalo</div>
-      <div class="login-sub">Panel de Administraci&oacute;n del Hostal</div>
+      <div class="login-logo"><i class="fa-solid fa-building"></i> Di'Mogalo</div>
+      <div class="login-sub">Panel de Administración de Contenidos</div>
+
       <div class="input-group">
         <i class="fa-solid fa-key"></i>
-        <input type="password" v-model="token" placeholder="Token de GitHub (ghp_...)" @keydown.enter="login">
+        <input type="password" v-model="token" placeholder="Token de GitHub (opcional: ghp_...)" @keydown.enter="loginGitHub">
       </div>
-      <button class="btn-primary" @click="login" :disabled="loading">
+      
+      <button class="btn-primary" @click="loginGitHub" :disabled="loading">
         <span v-if="loading"><i class="fa-solid fa-circle-notch fa-spin"></i> Conectando...</span>
-        <span v-else><i class="fa-solid fa-right-to-bracket"></i> Entrar al Panel</span>
+        <span v-else><i class="fa-solid fa-cloud-arrow-down"></i> Entrar y Conectar GitHub</span>
       </button>
+
+      <div class="divider">
+        <span>O Modo Directo</span>
+      </div>
+
+      <button class="btn btn-ghost" style="width:100%; justify-content:center; padding:12px; font-weight:600;" @click="loginLocal">
+        <i class="fa-solid fa-laptop-code"></i> Editar sin Token (Modo Local / Descarga)
+      </button>
+
       <div class="alert alert-error" v-if="error" style="margin-top:16px;">
         <i class="fa-solid fa-circle-exclamation"></i> {{ error }}
       </div>
+
       <p class="login-hint">
-        Necesitas un <a href="https://github.com/settings/tokens" target="_blank">Token de GitHub</a>
-        con permiso <strong>repo</strong> para guardar cambios en vivo.
+        Con el <strong>Token de GitHub</strong> los cambios se guardan directamente en el sitio web.<br>
+        En <strong>Modo Local</strong> puedes editar y guardar copias en tu equipo.
       </p>
     </div>
   </div>
 
-  <!-- ADMIN PANEL -->
+  <!-- ADMIN PANEL MAIN -->
   <template v-else>
     <button class="hamburger" @click="sidebarOpen = !sidebarOpen">
       <i :class="sidebarOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-bars'"></i>
     </button>
     <div class="sidebar-overlay" :class="{ open: sidebarOpen }" @click="sidebarOpen = false"></div>
 
+    <!-- SIDEBAR -->
     <aside class="sidebar" :class="{ open: sidebarOpen }">
       <div class="sidebar-logo">
-        &#x1F3E8; Di'Mogalo<span class="logo-sub">Administraci&oacute;n</span>
+        <i class="fa-solid fa-building"></i> Di'Mogalo
+        <span class="logo-sub">Construcciones &amp; Propiedades</span>
       </div>
+      
       <nav class="nav-menu">
-        <div class="nav-section-label">Contenido del Sitio</div>
+        <div class="nav-section-label">Secciones del Sitio</div>
+        
         <div v-for="sec in sections" :key="sec.id"
           class="nav-item" :class="{ active: activeSection === sec.id }"
           @click="activeSection = sec.id; sidebarOpen = false">
           <i :class="sec.icon"></i> {{ sec.label }}
         </div>
-        <div class="nav-section-label">Configuraci&oacute;n</div>
+
+        <div class="nav-section-label">Archivos &amp; Ajustes</div>
+        
         <div class="nav-item" :class="{ active: activeSection === 'contact' }"
           @click="activeSection = 'contact'; sidebarOpen = false">
           <i class="fa-solid fa-address-card"></i> Contacto &amp; Redes
         </div>
-        <div class="nav-item" :class="{ active: activeSection === 'images' }"
-          @click="activeSection = 'images'; sidebarOpen = false">
-          <i class="fa-solid fa-image"></i> Im&aacute;genes
+        
+        <div class="nav-item" :class="{ active: activeSection === 'media' }"
+          @click="activeSection = 'media'; sidebarOpen = false">
+          <i class="fa-solid fa-images"></i> Gestor de Imágenes
         </div>
       </nav>
+
       <div class="sidebar-footer">
         <div class="gh-status">
           <div class="status-dot" :class="statusDot"></div>
           <span>{{ statusText }}</span>
         </div>
-        <div>lomejordechile/di-mogalo-valparaiso</div>
+        <div style="font-size:0.7rem; color:var(--muted);">Repositorio: lomejordechile/di-mogalo-valparaiso</div>
       </div>
     </aside>
 
+    <!-- MAIN CONTENT -->
     <div class="main-content">
+      <!-- TOPBAR -->
       <div class="topbar">
         <div class="topbar-title">
-          <i :class="currentSectionIcon" style="color:var(--gold); margin-right:8px;"></i>
+          <i :class="currentSectionIcon" style="color:var(--gold);"></i>
           {{ currentSectionLabel }}
         </div>
+        
         <div class="topbar-actions">
-          <select v-model="currentLang" class="lang-selector"
-            v-if="activeSection !== 'images' && activeSection !== 'contact'">
-            <option value="es">ES Espanol</option>
-            <option value="en">EN English</option>
-            <option value="pt">PT Portugues</option>
-          </select>
-          <a :href="siteUrl" target="_blank" class="btn btn-ghost" style="text-decoration:none;">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Sitio
+          <a :href="siteUrl" target="_blank" class="btn btn-ghost">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Ver Sitio Web
           </a>
+          <button class="btn btn-ghost" @click="downloadJSON" title="Guardar copia local">
+            <i class="fa-solid fa-download"></i> Descargar JSON
+          </button>
           <button class="btn btn-ghost" @click="logout">
             <i class="fa-solid fa-right-from-bracket"></i> Salir
           </button>
@@ -230,94 +281,424 @@
         </div>
       </div>
 
+      <!-- EDITOR BODY -->
       <div class="editor-wrap">
         <div class="alert alert-success" v-if="successMsg">
           <i class="fa-solid fa-circle-check"></i> {{ successMsg }}
         </div>
-        <div class="alert alert-error" v-if="error && isLoggedIn">
+        <div class="alert alert-error" v-if="error">
           <i class="fa-solid fa-circle-exclamation"></i> {{ error }}
         </div>
         <div class="alert alert-info" v-if="pendingImages.length > 0">
-          <i class="fa-solid fa-clock"></i> {{ pendingImages.length }} imagen(es) pendiente(s) &mdash; se subiran al guardar.
+          <i class="fa-solid fa-clock"></i> Hay {{ pendingImages.length }} imagen(es) nueva(s) en espera &mdash; se subirán al presionar "Guardar Cambios".
         </div>
 
         <div v-if="loading" style="text-align:center; padding:60px; color:var(--text2);">
           <i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem; color:var(--gold);"></i>
-          <p style="margin-top:12px;">Cargando contenido desde GitHub...</p>
+          <p style="margin-top:12px;">Cargando información del sitio...</p>
         </div>
 
-        <template v-else-if="data">
+        <template v-else-if="content">
 
-          <!-- IMAGES -->
-          <div class="section-panel" :class="{ active: activeSection === 'images' }">
-            <div class="page-title">Imagenes del Sitio</div>
-            <div class="page-subtitle">Haz clic en una imagen para reemplazarla. Se subira a GitHub al presionar "Guardar Cambios".</div>
-            <div class="fields-grid">
-              <div class="field-box" v-for="(val, key) in data.images" :key="key">
-                <div class="field-label">{{ key }}</div>
-                <div class="img-upload-box">
-                  <input type="file" accept="image/*" @change="e => handleImageUpload(e, key)">
-                  <img :src="previewUrl(val)" class="img-preview" v-if="val">
-                  <div class="img-upload-icon" v-if="!val"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-                  <div class="img-upload-hint">{{ val ? 'Clic para cambiar imagen' : 'Clic para subir imagen' }}</div>
-                </div>
-                <div class="field-hint" v-if="val">Archivo actual: {{ val }}</div>
+          <!-- 1. HERO & GENERAL -->
+          <div class="section-panel" :class="{ active: activeSection === 'hero' }">
+            <div class="page-header">
+              <div>
+                <div class="page-title">Hero &amp; Identidad General</div>
+                <div class="page-subtitle">Configura el título principal de bienvenida, subtítulo y logos del sitio web.</div>
               </div>
             </div>
-          </div>
-
-          <!-- CONTACT -->
-          <div class="section-panel" :class="{ active: activeSection === 'contact' }">
-            <div class="page-title">Contacto &amp; Redes Sociales</div>
-            <div class="page-subtitle">Estos datos aparecen en el footer y botones de reserva del sitio web.</div>
-            <div class="fields-grid" v-if="data.contact">
-              <div class="field-box">
-                <div class="field-label">Numero WhatsApp</div>
-                <div class="icon-field">
-                  <div class="icon-badge" style="background:rgba(37,211,102,0.1); border-color:rgba(37,211,102,0.2); color:#25d466;">
-                    <i class="fa-brands fa-whatsapp"></i>
-                  </div>
-                  <input class="field-input" v-model="data.contact.whatsapp" placeholder="+569 9999 9999">
-                </div>
-                <div class="field-hint">Incluye el codigo de pais. Ej: +56 9XXXXXXXX</div>
-              </div>
-              <div class="field-box">
-                <div class="field-label">URL de Facebook</div>
-                <div class="icon-field">
-                  <div class="icon-badge" style="background:rgba(24,119,242,0.1); border-color:rgba(24,119,242,0.2); color:#1877f2;">
-                    <i class="fa-brands fa-facebook-f"></i>
-                  </div>
-                  <input class="field-input" v-model="data.contact.facebook" placeholder="https://facebook.com/...">
-                </div>
-              </div>
-              <div class="field-box">
-                <div class="field-label">Direccion</div>
-                <div class="icon-field">
-                  <div class="icon-badge"><i class="fa-solid fa-map-marker-alt"></i></div>
-                  <input class="field-input" v-model="data.contact.address" placeholder="Calle, Ciudad">
-                </div>
-              </div>
+            
+            <div class="fields-grid">
               <div class="field-box full-width">
-                <div class="field-label">URL del Video o Mapa Embed</div>
-                <input class="field-input" v-model="data.contact.gmaps_embed" placeholder="https://www.youtube.com/embed/...">
-                <div class="field-hint">URL de YouTube embed o de Google Maps iframe para la seccion de ubicacion.</div>
+                <div class="field-label">Nombre Comercial / Marca</div>
+                <input class="field-input" v-model="content.hostal_name" placeholder="Di'Mogalo Constructora &amp; Propiedades">
+              </div>
+
+              <div class="field-box full-width" v-if="content.hero">
+                <div class="field-label">Título Principal (Hero)</div>
+                <input class="field-input" v-model="content.hero.title" placeholder="Tu balcón privado sobre la magia de Valparaíso">
+              </div>
+
+              <div class="field-box full-width" v-if="content.hero">
+                <div class="field-label">Subtítulo (Hero)</div>
+                <textarea class="field-textarea" v-model="content.hero.subtitle" placeholder="Vive una experiencia única..."></textarea>
+              </div>
+
+              <div class="field-box" v-if="content.hero">
+                <div class="field-label">Imagen de Fondo (Hero)</div>
+                <div class="img-upload-box">
+                  <input type="file" accept="image/*" @change="e => uploadSingleImage(e, name => content.hero.background = name)">
+                  <img :src="getImageUrl(content.hero.background)" class="img-preview" v-if="content.hero.background">
+                  <div class="img-upload-icon"><i class="fa-solid fa-image"></i></div>
+                  <div class="img-upload-hint">Clic para cambiar imagen de fondo</div>
+                </div>
+                <div class="field-hint">Archivo: {{ content.hero.background }}</div>
+              </div>
+
+              <div class="field-box">
+                <div class="field-label">Logo Navbar Superior</div>
+                <div class="img-upload-box">
+                  <input type="file" accept="image/*" @change="e => uploadSingleImage(e, name => content.logo = name)">
+                  <img :src="getImageUrl(content.logo)" class="img-preview" v-if="content.logo">
+                  <div class="img-upload-icon"><i class="fa-solid fa-crown"></i></div>
+                  <div class="img-upload-hint">Clic para cambiar logo</div>
+                </div>
+                <div class="field-hint">Archivo: {{ content.logo }}</div>
               </div>
             </div>
           </div>
 
-          <!-- TEXT SECTIONS -->
-          <div class="section-panel" v-for="sec in textSections" :key="sec.id"
-            :class="{ active: activeSection === sec.id }">
-            <div class="page-title">{{ sec.label }}</div>
-            <div class="page-subtitle">Idioma activo: <strong>{{ langLabel }}</strong> &mdash; Cambialo en la barra superior.</div>
-            <div class="fields-grid">
-              <div class="field-box" v-for="key in sec.keys" :key="key"
-                :class="{ 'full-width': isTextarea(key) }">
-                <div class="field-label">{{ keyLabel(key) }}</div>
-                <textarea v-if="isTextarea(key)" class="field-textarea"
-                  v-model="data.translations[currentLang][key]"></textarea>
-                <input v-else class="field-input"
-                  v-model="data.translations[currentLang][key]">
+          <!-- 2. HABITACIONES Y PROPIEDADES (CRUD) -->
+          <div class="section-panel" :class="{ active: activeSection === 'rooms' }">
+            <div class="page-header">
+              <div>
+                <div class="page-title">Habitaciones y Propiedades en Arriendo</div>
+                <div class="page-subtitle">Administra todas las opciones de hospedaje y arriendo mostradas a tus clientes.</div>
+              </div>
+              <button class="btn btn-gold" @click="addRoom">
+                <i class="fa-solid fa-plus"></i> Agregar Nueva Habitación
+              </button>
+            </div>
+
+            <div class="field-box full-width" style="margin-bottom:20px;">
+              <div class="field-label">Título General de la Sección</div>
+              <input class="field-input" v-model="content.rooms_title_text" placeholder="Nuestras Habitaciones y Tarifas">
+            </div>
+
+            <div class="items-container">
+              <div class="card-item" v-for="(room, idx) in content.rooms" :key="idx">
+                <div class="card-item-header">
+                  <div class="card-item-title">
+                    <i class="fa-solid fa-bed" style="color:var(--gold);"></i>
+                    {{ room.title || 'Nueva Habitación' }}
+                  </div>
+                  <button class="btn btn-danger" @click="removeRoom(idx)">
+                    <i class="fa-solid fa-trash"></i> Eliminar
+                  </button>
+                </div>
+
+                <div class="card-item-body">
+                  <div>
+                    <div class="field-label">Título / Nombre de la Habitación</div>
+                    <input class="field-input" v-model="room.title" placeholder="Ej: Habitación Diaria Pareja">
+                  </div>
+
+                  <div>
+                    <div class="field-label">Imagen de la Habitación</div>
+                    <div class="img-upload-box">
+                      <input type="file" accept="image/*" @change="e => uploadSingleImage(e, name => room.image = name)">
+                      <img :src="getImageUrl(room.image)" class="img-preview" v-if="room.image">
+                      <div class="img-upload-icon"><i class="fa-solid fa-camera"></i></div>
+                      <div class="img-upload-hint">Clic para cambiar imagen</div>
+                    </div>
+                  </div>
+
+                  <div style="grid-column: 1 / -1;">
+                    <div class="field-label">Descripción &amp; Precio</div>
+                    <textarea class="field-textarea" v-model="room.description" placeholder="Detalles de la habitación y valor..."></textarea>
+                  </div>
+
+                  <div style="grid-column: 1 / -1;">
+                    <div class="field-label">
+                      <span>Puntos Destacados / Características</span>
+                      <button class="btn btn-ghost" style="padding:2px 8px; font-size:0.7rem;" @click="addFeature(room)">+ Agregar Punto</button>
+                    </div>
+                    <div class="features-list">
+                      <div class="feature-pill" v-for="(feat, fIdx) in room.features" :key="fIdx">
+                        <input v-model="room.features[fIdx]" placeholder="Ej: 📺 Smart TV">
+                        <i class="fa-solid fa-xmark" @click="removeFeature(room, fIdx)"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. GALERÍA DE FOTOS -->
+          <div class="section-panel" :class="{ active: activeSection === 'gallery' }">
+            <div class="page-header">
+              <div>
+                <div class="page-title">Galería de Imágenes</div>
+                <div class="page-subtitle">Imágenes destacadas de la vista, balcones e instalaciones.</div>
+              </div>
+              <button class="btn btn-gold" @click="addGalleryItem">
+                <i class="fa-solid fa-plus"></i> Agregar Foto a la Galería
+              </button>
+            </div>
+
+            <div class="items-container">
+              <div class="card-item" v-for="(g, idx) in content.gallery" :key="idx">
+                <div class="card-item-header">
+                  <div class="card-item-title">
+                    <i class="fa-solid fa-image" style="color:var(--gold);"></i>
+                    Imagen Galería #{{ idx + 1 }}
+                  </div>
+                  <button class="btn btn-danger" @click="removeGalleryItem(idx)">
+                    <i class="fa-solid fa-trash"></i> Eliminar
+                  </button>
+                </div>
+
+                <div class="card-item-body">
+                  <div>
+                    <div class="field-label">Archivo de Imagen</div>
+                    <div class="img-upload-box">
+                      <input type="file" accept="image/*" @change="e => uploadSingleImage(e, name => g.image = name)">
+                      <img :src="getImageUrl(g.image)" class="img-preview" v-if="g.image">
+                      <div class="img-upload-icon"><i class="fa-solid fa-upload"></i></div>
+                      <div class="img-upload-hint">Clic para subir/cambiar foto</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="field-label">Pie de Foto / Leyenda (Caption)</div>
+                    <textarea class="field-textarea" v-model="g.caption" placeholder="Descripción breve de la foto..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. EXPERIENCIA DI'MOGALO -->
+          <div class="section-panel" :class="{ active: activeSection === 'experience' }">
+            <div class="page-header">
+              <div>
+                <div class="page-title">Sección Experiencia</div>
+                <div class="page-subtitle">Modifica la cita inspiradora y los 3 puntos de valor destacados.</div>
+              </div>
+            </div>
+
+            <div class="fields-grid" v-if="content.experience">
+              <div class="field-box full-width">
+                <div class="field-label">Etiqueta de la Sección</div>
+                <input class="field-input" v-model="content.exp_section_title" placeholder="Experiencia Di'Mogalo">
+              </div>
+
+              <div class="field-box full-width">
+                <div class="field-label">Cita / Frase Principal</div>
+                <textarea class="field-textarea" v-model="content.experience.title" placeholder="“Di'Mogalo Constructora &amp; Propiedades no es solo un lugar...”"></textarea>
+              </div>
+            </div>
+
+            <div class="page-header" style="margin-top:28px;">
+              <div class="page-title" style="font-size:1.1rem;">Puntos Destacados de Experiencia</div>
+              <button class="btn btn-ghost" @click="addExpItem">+ Agregar Punto</button>
+            </div>
+
+            <div class="items-container" v-if="content.experience">
+              <div class="card-item" v-for="(item, idx) in content.experience.items" :key="idx">
+                <div class="card-item-header">
+                  <div class="card-item-title">Punto #{{ idx + 1 }}</div>
+                  <button class="btn btn-danger" @click="removeExpItem(idx)"><i class="fa-solid fa-trash"></i></button>
+                </div>
+                <div class="card-item-body">
+                  <div>
+                    <div class="field-label">Icono</div>
+                    <input class="field-input" v-model="item.icon" placeholder="moon, coffee, map-pin...">
+                    <div class="icon-picker-wrap">
+                      <span class="icon-chip" v-for="ic in ['moon','coffee','map-pin','sun','star','heart']" :key="ic" @click="item.icon = ic">{{ ic }}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="field-label">Texto Destacado</div>
+                    <input class="field-input" v-model="item.text" placeholder="Texto descriptivo...">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. SERVICIOS Y AMENIDADES -->
+          <div class="section-panel" :class="{ active: activeSection === 'services' }">
+            <div class="page-header">
+              <div>
+                <div class="page-title">Servicios y Amenidades</div>
+                <div class="page-subtitle">Gestiona las comodidades que ofrece el hostal / propiedades.</div>
+              </div>
+              <button class="btn btn-gold" @click="addService">
+                <i class="fa-solid fa-plus"></i> Agregar Servicio
+              </button>
+            </div>
+
+            <div class="field-box full-width" style="margin-bottom:20px;">
+              <div class="field-label">Título de la Sección</div>
+              <input class="field-input" v-model="content.services_title_text" placeholder="Amenidades y Servicios">
+            </div>
+
+            <div class="items-container">
+              <div class="card-item" v-for="(serv, idx) in content.services" :key="idx">
+                <div class="card-item-header">
+                  <div class="card-item-title">{{ serv.title || 'Servicio' }}</div>
+                  <button class="btn btn-danger" @click="removeService(idx)"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                </div>
+                <div class="card-item-body">
+                  <div>
+                    <div class="field-label">Icono</div>
+                    <input class="field-input" v-model="serv.icon" placeholder="wifi, droplets, credit-card...">
+                  </div>
+                  <div>
+                    <div class="field-label">Título del Servicio</div>
+                    <input class="field-input" v-model="serv.title" placeholder="Ej: Conectividad y Ocio">
+                  </div>
+                  <div style="grid-column: 1 / -1;">
+                    <div class="field-label">Descripción</div>
+                    <textarea class="field-textarea" v-model="serv.text" placeholder="Detalle del servicio..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. REGLAS Y NORMAS -->
+          <div class="section-panel" :class="{ active: activeSection === 'tips' }">
+            <div class="page-header">
+              <div>
+                <div class="page-title">Reglas de Convivencia y Normas</div>
+                <div class="page-subtitle">Edita el reglamento interno y recomendaciones para los huéspedes.</div>
+              </div>
+              <button class="btn btn-gold" @click="addTip">
+                <i class="fa-solid fa-plus"></i> Agregar Regla
+              </button>
+            </div>
+
+            <div class="fields-grid" style="margin-bottom:20px;">
+              <div class="field-box">
+                <div class="field-label">Título Principal</div>
+                <input class="field-input" v-model="content.tips_title_main" placeholder="Reglas de Convivencia">
+              </div>
+              <div class="field-box">
+                <div class="field-label">Texto Introductorio</div>
+                <input class="field-input" v-model="content.tips_desc_main" placeholder="Para asegurar un ambiente de paz...">
+              </div>
+            </div>
+
+            <div class="items-container">
+              <div class="card-item" v-for="(tip, idx) in content.tips" :key="idx">
+                <div class="card-item-header">
+                  <div class="card-item-title">{{ tip.title || 'Regla' }}</div>
+                  <button class="btn btn-danger" @click="removeTip(idx)"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                </div>
+                <div class="card-item-body">
+                  <div>
+                    <div class="field-label">Icono</div>
+                    <input class="field-input" v-model="tip.icon" placeholder="volume-x, key, zap-off, trash-2...">
+                  </div>
+                  <div>
+                    <div class="field-label">Título de la Norma</div>
+                    <input class="field-input" v-model="tip.title" placeholder="Ej: Respeto y Silencio">
+                  </div>
+                  <div style="grid-column: 1 / -1;">
+                    <div class="field-label">Detalle</div>
+                    <textarea class="field-textarea" v-model="tip.text" placeholder="Especificación de la norma..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. RESEÑAS DE CLIENTES -->
+          <div class="section-panel" :class="{ active: activeSection === 'reviews' }">
+            <div class="page-header">
+              <div>
+                <div class="page-title">Reseñas y Opiniones</div>
+                <div class="page-subtitle">Testimonios de huéspedes y clientes satisfechos.</div>
+              </div>
+              <button class="btn btn-gold" @click="addReview">
+                <i class="fa-solid fa-plus"></i> Agregar Reseña
+              </button>
+            </div>
+
+            <div class="field-box full-width" style="margin-bottom:20px;">
+              <div class="field-label">Título de la Sección</div>
+              <input class="field-input" v-model="content.reviews_title_text" placeholder="Lo que dicen nuestros huéspedes">
+            </div>
+
+            <div class="items-container">
+              <div class="card-item" v-for="(rev, idx) in content.reviews" :key="idx">
+                <div class="card-item-header">
+                  <div class="card-item-title">{{ rev.client || 'Cliente' }}</div>
+                  <button class="btn btn-danger" @click="removeReview(idx)"><i class="fa-solid fa-trash"></i> Eliminar</button>
+                </div>
+                <div class="card-item-body">
+                  <div>
+                    <div class="field-label">Valoración (Estrellas)</div>
+                    <input class="field-input" v-model="rev.stars" placeholder="★★★★★">
+                  </div>
+                  <div>
+                    <div class="field-label">Nombre del Cliente / Procedencia</div>
+                    <input class="field-input" v-model="rev.client" placeholder="Ej: Andrea M., 🇨🇱">
+                  </div>
+                  <div style="grid-column: 1 / -1;">
+                    <div class="field-label">Comentario</div>
+                    <textarea class="field-textarea" v-model="rev.text" placeholder="Texto del testimonio..."></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. CONTACTO Y REDES -->
+          <div class="section-panel" :class="{ active: activeSection === 'contact' }">
+            <div class="page-header">
+              <div>
+                <div class="page-title">Contacto, Redes Sociales &amp; Ubicación</div>
+                <div class="page-subtitle">Configuración del canal de WhatsApp, Facebook y enlaces de mapa.</div>
+              </div>
+            </div>
+
+            <div class="fields-grid" v-if="content.contact">
+              <div class="field-box">
+                <div class="field-label">Número de WhatsApp (con código de país)</div>
+                <input class="field-input" v-model="content.contact.whatsapp" placeholder="+569 5919 1835">
+                <div class="field-hint">Ej: +56959191835</div>
+              </div>
+
+              <div class="field-box">
+                <div class="field-label">Enlace de Facebook</div>
+                <input class="field-input" v-model="content.contact.facebook" placeholder="https://web.facebook.com/...">
+              </div>
+
+              <div class="field-box">
+                <div class="field-label">Dirección Física</div>
+                <input class="field-input" v-model="content.contact.address" placeholder="Calle Israel 108, Valparaíso">
+              </div>
+
+              <div class="field-box full-width">
+                <div class="field-label">URL del Mapa / Video Embed</div>
+                <input class="field-input" v-model="content.contact.gmaps_embed" placeholder="https://www.google.com/maps?q=...">
+              </div>
+
+              <div class="field-box full-width">
+                <div class="field-label">Título Botón CTA Reserva</div>
+                <input class="field-input" v-model="content.cta_button_text" placeholder="Consultar por WhatsApp">
+              </div>
+            </div>
+          </div>
+
+          <!-- 9. GESTOR DE IMÁGENES -->
+          <div class="section-panel" :class="{ active: activeSection === 'media' }">
+            <div class="page-header">
+              <div>
+                <div class="page-title">Gestor de Archivos de Imágenes</div>
+                <div class="page-subtitle">Sube imágenes directamente para utilizarlas en cualquier sección del sitio web.</div>
+              </div>
+            </div>
+
+            <div class="field-box full-width" style="margin-bottom:24px;">
+              <div class="img-upload-box" style="padding:28px;">
+                <input type="file" accept="image/*" multiple @change="handleMultipleUploads">
+                <div class="img-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                <div style="font-weight:700; font-size:1rem; margin-bottom:4px;">Haz clic o arrastra imágenes aquí para subirlas</div>
+                <div class="img-upload-hint">Formatos soportados: JPG, PNG, WEBP</div>
+              </div>
+            </div>
+
+            <div class="page-title" style="font-size:1rem; margin-bottom:14px;">Galería de Imágenes Disponibles</div>
+            <div class="media-grid">
+              <div class="media-card" v-for="img in mediaList" :key="img">
+                <img :src="getImageUrl(img)" :alt="img">
+                <div class="media-card-name">{{ img }}</div>
               </div>
             </div>
           </div>
@@ -331,17 +712,18 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
 const { createApp, ref, computed } = Vue;
+
 createApp({
   setup() {
-    const token      = ref('');
-    const isLoggedIn = ref(false);
-    const loading    = ref(false);
-    const saving     = ref(false);
-    const error      = ref('');
-    const successMsg = ref('');
-    const data       = ref(null);
-    const fileSha    = ref('');
-    const currentLang   = ref('es');
+    const token        = ref('');
+    const isLoggedIn   = ref(false);
+    const isLocalMode  = ref(false);
+    const loading      = ref(false);
+    const saving       = ref(false);
+    const error        = ref('');
+    const successMsg   = ref('');
+    const content      = ref(null);
+    const fileSha      = ref('');
     const activeSection = ref('hero');
     const pendingImages = ref([]);
     const sidebarOpen   = ref(false);
@@ -349,78 +731,56 @@ createApp({
 
     const siteUrl   = 'https://lomejordechile.github.io/di-mogalo-valparaiso/';
     const REPO      = 'lomejordechile/di-mogalo-valparaiso';
-    const DATA_PATH = 'data/data.json';
+    const DATA_PATH = 'data/content.json';
     const BRANCH    = 'main';
 
     const sections = [
-      { id:'hero',       label:'Inicio & Hero',         icon:'fa-solid fa-house' },
-      { id:'rooms',      label:'Habitaciones',           icon:'fa-solid fa-bed' },
-      { id:'experience', label:'Experiencia',            icon:'fa-solid fa-star' },
-      { id:'tips',       label:'Tips & Turismo',         icon:'fa-solid fa-map-location-dot' },
-      { id:'services',   label:'Servicios',              icon:'fa-solid fa-concierge-bell' },
-      { id:'reviews',    label:'Resenas',                icon:'fa-solid fa-comments' },
-      { id:'footer',     label:'Footer & CTA',           icon:'fa-solid fa-file-lines' },
+      { id:'hero',       label:'Hero & Identidad',      icon:'fa-solid fa-house' },
+      { id:'rooms',      label:'Habitaciones & Arriendos', icon:'fa-solid fa-bed' },
+      { id:'gallery',    label:'Galería de Fotos',      icon:'fa-solid fa-image' },
+      { id:'experience', label:'Experiencia',           icon:'fa-solid fa-star' },
+      { id:'services',   label:'Servicios & Amenidades', icon:'fa-solid fa-concierge-bell' },
+      { id:'tips',       label:'Reglas & Normas',        icon:'fa-solid fa-clipboard-list' },
+      { id:'reviews',    label:'Reseñas de Huéspedes',   icon:'fa-solid fa-comments' },
     ];
 
-    const textSections = [
-      { id:'hero',       label:'Inicio & Hero',
-        keys:['nav_home','nav_rooms','nav_services','nav_location','nav_rules','nav_book','hero_title','hero_sub','btn_whatsapp','btn_rooms'] },
-      { id:'rooms',      label:'Habitaciones',
-        keys:['rooms_title','r1_title','r1_desc','r1_b1','r1_b2','r1_b3','r1_b4','btn_avail'] },
-      { id:'experience', label:'Experiencia',
-        keys:['exp_tag','exp_title','exp_f1','exp_f2','exp_f3'] },
-      { id:'tips',       label:'Tips & Turismo',
-        keys:['tips_tag','tips_title','tips_desc','t1_t','t1_d','t2_t','t2_d','t3_t','t3_d','t4_t','t4_d'] },
-      { id:'services',   label:'Servicios',
-        keys:['serv_title','s1_t','s1_d','s2_t','s2_d','s3_t','s3_d','s4_t','s4_d'] },
-      { id:'reviews',    label:'Resenas',
-        keys:['rev_tag','rev_title','rev1_t','rev2_t','rev3_t'] },
-      { id:'footer',     label:'Footer & CTA',
-        keys:['cta_title','cta_desc','btn_book_now','footer_slogan','footer_links','footer_contact','footer_rights','loc_title','loc_subtitle','loc_desc'] }
-    ];
+    const statusDot = computed(() => {
+      if (ghConnected.value === true) return 'connected';
+      if (isLocalMode.value) return 'local';
+      return 'error';
+    });
 
-    const textareaKeys = new Set([
-      'hero_sub','exp_title','tips_desc','t1_d','t2_d','t3_d','t4_d',
-      's1_d','s2_d','s3_d','s4_d','rev1_t','rev2_t','rev3_t','cta_desc','loc_desc','r1_desc'
-    ]);
-    const isTextarea = (k) => textareaKeys.has(k);
+    const statusText = computed(() => {
+      if (ghConnected.value === true) return 'Conectado a GitHub API';
+      if (isLocalMode.value) return 'Modo Local (Sin GitHub)';
+      return 'No Autenticado';
+    });
 
-    const KEY_LABELS = {
-      nav_home:'Nav - Inicio', nav_rooms:'Nav - Habitaciones', nav_services:'Nav - Servicios',
-      nav_location:'Nav - Ubicacion', nav_rules:'Nav - Reglas', nav_book:'Nav - Reservar',
-      hero_title:'Titulo Principal', hero_sub:'Subtitulo Hero',
-      btn_whatsapp:'Boton WhatsApp', btn_rooms:'Boton Habitaciones',
-      exp_tag:'Etiqueta Seccion', exp_title:'Cita / Quote', exp_f1:'Feature 1', exp_f2:'Feature 2', exp_f3:'Feature 3',
-      rooms_title:'Titulo Seccion Habitaciones', r1_title:'Titulo Habitacion', r1_desc:'Descripcion',
-      r1_b1:'Beneficio 1', r1_b2:'Beneficio 2', r1_b3:'Beneficio 3', r1_b4:'Beneficio 4',
-      btn_avail:'Boton Disponibilidad',
-      tips_tag:'Etiqueta Seccion', tips_title:'Titulo Tips', tips_desc:'Descripcion Intro',
-      t1_t:'Tip 1 - Titulo', t1_d:'Tip 1 - Descripcion', t2_t:'Tip 2 - Titulo', t2_d:'Tip 2 - Descripcion',
-      t3_t:'Tip 3 - Titulo', t3_d:'Tip 3 - Descripcion', t4_t:'Tip 4 - Titulo', t4_d:'Tip 4 - Descripcion',
-      serv_title:'Titulo Servicios', s1_t:'Servicio 1 - Titulo', s1_d:'Servicio 1 - Descripcion',
-      s2_t:'Servicio 2 - Titulo', s2_d:'Servicio 2 - Descripcion',
-      s3_t:'Servicio 3 - Titulo', s3_d:'Servicio 3 - Descripcion',
-      s4_t:'Servicio 4 - Titulo', s4_d:'Servicio 4 - Descripcion',
-      rev_tag:'Etiqueta Resenas', rev_title:'Titulo Seccion', rev1_t:'Resena 1', rev2_t:'Resena 2', rev3_t:'Resena 3',
-      cta_title:'Titulo CTA', cta_desc:'Descripcion CTA', btn_book_now:'Boton Reservar',
-      footer_slogan:'Slogan Footer', footer_links:'Titulo Links', footer_contact:'Titulo Contacto',
-      footer_rights:'Derechos de Autor', loc_title:'Titulo Ubicacion',
-      loc_subtitle:'Subtitulo Ubicacion', loc_desc:'Descripcion Ubicacion'
-    };
-    const keyLabel = (k) => KEY_LABELS[k] || k;
-
-    const statusDot  = computed(() => ghConnected.value === true ? 'connected' : ghConnected.value === false ? 'error' : '');
-    const statusText = computed(() => ghConnected.value === true ? 'Conectado a GitHub' : ghConnected.value === false ? 'Error de conexion' : 'No autenticado');
-    const langLabel  = computed(() => ({ es:'Espanol', en:'English', pt:'Portugues' }[currentLang.value]));
     const currentSectionLabel = computed(() => {
       if (activeSection.value === 'contact') return 'Contacto & Redes Sociales';
-      if (activeSection.value === 'images')  return 'Imagenes del Sitio';
+      if (activeSection.value === 'media')   return 'Gestor de Archivos de Imágenes';
       return sections.find(s => s.id === activeSection.value)?.label || '';
     });
+
     const currentSectionIcon = computed(() => {
       if (activeSection.value === 'contact') return 'fa-solid fa-address-card';
-      if (activeSection.value === 'images')  return 'fa-solid fa-image';
+      if (activeSection.value === 'media')   return 'fa-solid fa-images';
       return sections.find(s => s.id === activeSection.value)?.icon || 'fa-solid fa-circle';
+    });
+
+    const mediaList = computed(() => {
+      const set = new Set();
+      if (!content.value) return [];
+      if (content.value.logo) set.add(content.value.logo);
+      if (content.value.hero && content.value.hero.background) set.add(content.value.hero.background);
+      if (content.value.rooms) {
+        content.value.rooms.forEach(r => { if (r.image) set.add(r.image); });
+      }
+      if (content.value.gallery) {
+        content.value.gallery.forEach(g => { if (g.image) set.add(g.image); });
+      }
+      pendingImages.value.forEach(pi => set.add(pi.filename));
+      return Array.from(set);
     });
 
     const ghHeaders = () => ({
@@ -430,24 +790,28 @@ createApp({
     });
 
     const fetchContent = async () => {
+      if (isLocalMode.value) {
+        const localSaved = localStorage.getItem('dimogalo_content_json');
+        if (localSaved) return JSON.parse(localSaved);
+        const res = await fetch('../data/content.json');
+        return await res.json();
+      }
+
       const res = await fetch(
         `https://api.github.com/repos/${REPO}/contents/${DATA_PATH}?ref=${BRANCH}&t=${Date.now()}`,
         { headers: ghHeaders() }
       );
-      if (!res.ok) throw new Error(res.status === 401 ? 'Token invalido o sin permisos repo.' : 'No se pudo conectar a GitHub.');
+      if (!res.ok) throw new Error(res.status === 401 ? 'Token inválido o sin permisos repo.' : 'Error conectando a GitHub.');
       const d = await res.json();
       fileSha.value = d.sha;
       return JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g,'')))));
     };
 
-    const login = async () => {
-      if (!token.value.trim()) { error.value = 'Ingresa tu token de GitHub.'; return; }
-      loading.value = true; error.value = '';
+    const loginGitHub = async () => {
+      if (!token.value.trim()) { error.value = 'Por favor ingresa un token de GitHub.'; return; }
+      loading.value = true; error.value = ''; isLocalMode.value = false;
       try {
-        data.value = await fetchContent();
-        if (!data.value.contact) {
-          data.value.contact = { whatsapp:'', facebook:'', address:'', gmaps_embed:'' };
-        }
+        content.value = await fetchContent();
         isLoggedIn.value = true;
         ghConnected.value = true;
         sessionStorage.setItem('gh_token_di_mogalo', token.value);
@@ -455,71 +819,151 @@ createApp({
       loading.value = false;
     };
 
-    const logout = () => {
-      sessionStorage.removeItem('gh_token_di_mogalo');
-      isLoggedIn.value = false; data.value = null; ghConnected.value = null;
+    const loginLocal = async () => {
+      loading.value = true; error.value = ''; isLocalMode.value = true;
+      try {
+        content.value = await fetchContent();
+        isLoggedIn.value = true;
+        ghConnected.value = false;
+      } catch(e) { error.value = 'No se pudo cargar el archivo local content.json'; }
+      loading.value = false;
     };
 
-    const handleImageUpload = (e, imgKey) => {
+    const logout = () => {
+      sessionStorage.removeItem('gh_token_di_mogalo');
+      isLoggedIn.value = false; content.value = null; ghConnected.value = null; isLocalMode.value = false;
+    };
+
+    const getImageUrl = (path) => {
+      if (!path) return '';
+      const foundPending = pendingImages.value.find(p => p.filename === path);
+      if (foundPending) return `data:image/png;base64,${foundPending.base64}`;
+      if (path.startsWith('data:') || path.startsWith('http')) return path;
+      return `../${path}`;
+    };
+
+    const uploadSingleImage = (e, callback) => {
       const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = (evt) => {
         const base64 = evt.target.result.split(',')[1];
         const ext = file.name.split('.').pop().toLowerCase();
-        const newFilename = `${imgKey}_${Date.now()}.${ext}`;
-        data.value.images[imgKey] = newFilename;
-        pendingImages.value = pendingImages.value.filter(i => !i.filename.startsWith(imgKey));
+        const newFilename = `img_${Date.now()}_${Math.floor(Math.random()*1000)}.${ext}`;
         pendingImages.value.push({ filename: newFilename, base64 });
+        callback(newFilename);
       };
       reader.readAsDataURL(file);
     };
 
-    const previewUrl = (path) => {
-      if (!path) return '';
-      if (path.startsWith('data:')) return path;
-      return `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${path}`;
+    const handleMultipleUploads = (e) => {
+      const files = Array.from(e.target.files);
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          const base64 = evt.target.result.split(',')[1];
+          const ext = file.name.split('.').pop().toLowerCase();
+          const newFilename = `upload_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9]/g,'_')}.${ext}`;
+          pendingImages.value.push({ filename: newFilename, base64 });
+        };
+        reader.readAsDataURL(file);
+      });
     };
 
+    /* CRUD ROOMS */
+    const addRoom = () => {
+      if (!content.value.rooms) content.value.rooms = [];
+      content.value.rooms.unshift({
+        title: 'Nueva Habitación',
+        description: 'Descripción de la habitación...',
+        image: 'VISTA.jpg',
+        features: ['🛌 Cama cómoda', '📺 Smart TV', '📶 Wi-Fi']
+      });
+    };
+    const removeRoom = (idx) => content.value.rooms.splice(idx, 1);
+    const addFeature = (room) => { if (!room.features) room.features = []; room.features.push('✨ Nueva característica'); };
+    const removeFeature = (room, fIdx) => room.features.splice(fIdx, 1);
+
+    /* CRUD GALLERY */
+    const addGalleryItem = () => {
+      if (!content.value.gallery) content.value.gallery = [];
+      content.value.gallery.unshift({ image: 'VISTA.jpg', caption: 'Hermosa vista panorámica del puerto.' });
+    };
+    const removeGalleryItem = (idx) => content.value.gallery.splice(idx, 1);
+
+    /* CRUD SERVICES, TIPS, REVIEWS, EXP */
+    const addService = () => { if (!content.value.services) content.value.services = []; content.value.services.push({ icon: 'wifi', title: 'Nuevo Servicio', text: 'Descripción...' }); };
+    const removeService = (idx) => content.value.services.splice(idx, 1);
+    const addTip = () => { if (!content.value.tips) content.value.tips = []; content.value.tips.push({ icon: 'key', title: 'Nueva Regla', text: 'Descripción...' }); };
+    const removeTip = (idx) => content.value.tips.splice(idx, 1);
+    const addReview = () => { if (!content.value.reviews) content.value.reviews = []; content.value.reviews.push({ stars: '★★★★★', text: 'Comentario...', client: 'Cliente' }); };
+    const removeReview = (idx) => content.value.reviews.splice(idx, 1);
+    const addExpItem = () => { if (!content.value.experience.items) content.value.experience.items = []; content.value.experience.items.push({ icon: 'star', text: 'Nuevo punto' }); };
+    const removeExpItem = (idx) => content.value.experience.items.splice(idx, 1);
+
+    /* SAVE & EXPORT */
     const saveChanges = async () => {
       saving.value = true; error.value = ''; successMsg.value = '';
       try {
+        const jsonStr = JSON.stringify(content.value, null, 2);
+        localStorage.setItem('dimogalo_content_json', jsonStr);
+
+        if (isLocalMode.value || !token.value) {
+          successMsg.value = 'Cambios guardados localmente. Usa "Descargar JSON" para actualizar el archivo content.json en tu equipo.';
+          saving.value = false;
+          return;
+        }
+
+        // Subir imágenes pendientes a GitHub
         for (const img of pendingImages.value) {
           const shaRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${img.filename}?ref=${BRANCH}`, { headers: ghHeaders() });
-          let body = { message: `Upload: ${img.filename}`, content: img.base64, branch: BRANCH };
+          let body = { message: `Upload image: ${img.filename}`, content: img.base64, branch: BRANCH };
           if (shaRes.ok) { const sd = await shaRes.json(); body.sha = sd.sha; }
           const upRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${img.filename}`, {
             method: 'PUT', headers: ghHeaders(), body: JSON.stringify(body)
           });
-          if (!upRes.ok) throw new Error(`Error subiendo ${img.filename}`);
+          if (!upRes.ok) throw new Error(`Error subiendo la imagen ${img.filename}`);
         }
         pendingImages.value = [];
-        const jsonStr = JSON.stringify(data.value, null, 2);
+
+        // Guardar JSON en GitHub
         const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
         const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${DATA_PATH}`, {
           method: 'PUT', headers: ghHeaders(),
-          body: JSON.stringify({ message: 'Update content via Admin Dashboard', content: encoded, sha: fileSha.value, branch: BRANCH })
+          body: JSON.stringify({ message: 'Update content.json via Admin Dashboard', content: encoded, sha: fileSha.value, branch: BRANCH })
         });
-        if (!res.ok) { const eb = await res.json(); throw new Error(eb.message || 'No se pudo guardar.'); }
+        if (!res.ok) { const eb = await res.json(); throw new Error(eb.message || 'No se pudo guardar en GitHub.'); }
         const rd = await res.json();
         fileSha.value = rd.content.sha;
         ghConnected.value = true;
-        successMsg.value = 'Guardado exitosamente. Los cambios tardaran 1-2 minutos en reflejarse en el sitio.';
-        setTimeout(() => successMsg.value = '', 7000);
-      } catch(e) { error.value = e.message; ghConnected.value = false; }
+        successMsg.value = '¡Guardado con éxito en GitHub! Los cambios estarán visibles en el sitio en 1-2 minutos.';
+      } catch(e) {
+        error.value = e.message;
+      }
       saving.value = false;
     };
 
-    const saved = sessionStorage.getItem('gh_token_di_mogalo');
-    if (saved) { token.value = saved; login(); }
+    const downloadJSON = () => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(content.value, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "content.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    };
+
+    const savedToken = sessionStorage.getItem('gh_token_di_mogalo');
+    if (savedToken) { token.value = savedToken; loginGitHub(); }
 
     return {
-      token, isLoggedIn, loading, saving, error, successMsg,
-      data, currentLang, activeSection, sections, textSections,
-      isTextarea, keyLabel, login, logout, saveChanges,
-      handleImageUpload, previewUrl, sidebarOpen, ghConnected,
-      statusDot, statusText, langLabel, currentSectionLabel, currentSectionIcon, siteUrl,
-      pendingImages
+      token, isLoggedIn, isLocalMode, loading, saving, error, successMsg,
+      content, activeSection, sections, pendingImages, sidebarOpen, ghConnected,
+      statusDot, statusText, currentSectionLabel, currentSectionIcon, siteUrl, mediaList,
+      loginGitHub, loginLocal, logout, uploadSingleImage, handleMultipleUploads, getImageUrl,
+      addRoom, removeRoom, addFeature, removeFeature, addGalleryItem, removeGalleryItem,
+      addService, removeService, addTip, removeTip, addReview, removeReview, addExpItem, removeExpItem,
+      saveChanges, downloadJSON
     };
   }
 }).mount('#app');
