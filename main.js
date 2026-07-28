@@ -193,10 +193,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (roomsContainer) {
           roomsContainer.innerHTML = data.rooms.map(room => {
             const phoneNumber = (data.contact?.whatsapp || '').replace(/\s+/g, '').replace(/\+/g, '');
+            const galleryHtml = (room.gallery && room.gallery.length > 0) ? room.gallery : (room.image ? [room.image] : []);
+            const mainImg = galleryHtml.length > 0 ? galleryHtml[0] : '';
+            const galleryAttr = galleryHtml.length > 0 ? `data-gallery='${JSON.stringify(galleryHtml).replace(/'/g, "&apos;")}'` : '';
             return `
               <div class="room-card revealed" data-reveal>
-                <div class="room-image">
-                  <img src="${room.image || ''}" alt="${room.title || ''}">
+                <div class="room-image" ${galleryAttr} onclick="openLightbox(this)" style="cursor:pointer;" title="Ver galería">
+                  <img src="${mainImg}" alt="${room.title || ''}">
+                  <div class="room-img-overlay"><i data-lucide="zoom-in" style="width:48px;height:48px;"></i></div>
                 </div>
                 <div class="room-details">
                   <h3 data-i18n="${room.title_key || ''}">${room.title || 'Habitación'}</h3>
@@ -334,3 +338,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadCMSContent();
 });
+
+// Lightbox Logic for Rooms
+window.openLightbox = function(el) {
+  const galleryStr = el.getAttribute('data-gallery');
+  if (!galleryStr) return;
+  const gallery = JSON.parse(galleryStr.replace(/&apos;/g, "'"));
+  if (gallery.length === 0) return;
+  
+  let lb = document.getElementById('room-lightbox');
+  if (!lb) {
+    lb = document.createElement('div');
+    lb.id = 'room-lightbox';
+    document.body.appendChild(lb);
+  }
+  
+  let currentIdx = 0;
+  
+  const renderLb = () => {
+    lb.innerHTML = `
+      <div class="lb-backdrop" onclick="closeLightbox()"></div>
+      <div class="lb-content">
+        <button class="lb-close" onclick="closeLightbox()">&times;</button>
+        <img src="${gallery[currentIdx]}" class="lb-img">
+        ${gallery.length > 1 ? `
+          <button class="lb-prev" onclick="event.stopPropagation(); changeLbImg(-1)">&#10094;</button>
+          <button class="lb-next" onclick="event.stopPropagation(); changeLbImg(1)">&#10095;</button>
+          <div class="lb-dots">
+            ${gallery.map((_, i) => `<span class="lb-dot ${i === currentIdx ? 'active' : ''}" onclick="event.stopPropagation(); gotoLbImg(${i})"></span>`).join('')}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  };
+  
+  window.closeLightbox = () => { lb.style.display = 'none'; };
+  window.changeLbImg = (dir) => {
+    currentIdx = (currentIdx + dir + gallery.length) % gallery.length;
+    renderLb();
+  };
+  window.gotoLbImg = (idx) => {
+    currentIdx = idx;
+    renderLb();
+  };
+  
+  lb.style.display = 'block';
+  renderLb();
+};

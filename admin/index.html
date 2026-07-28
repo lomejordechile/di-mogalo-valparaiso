@@ -384,13 +384,18 @@
                     <input class="field-input" v-model="room.title" placeholder="Ej: Habitación Diaria Pareja">
                   </div>
 
-                  <div>
-                    <div class="field-label">Imagen de la Habitación</div>
-                    <div class="img-upload-box">
-                      <input type="file" accept="image/*" @change="e => uploadSingleImage(e, name => room.image = name)">
-                      <img :src="getImageUrl(room.image)" class="img-preview" v-if="room.image">
-                      <div class="img-upload-icon"><i class="fa-solid fa-camera"></i></div>
-                      <div class="img-upload-hint">Clic para cambiar imagen</div>
+                  <div style="grid-column: 1 / -1;">
+                    <div class="field-label">
+                      <span>Galería de Imágenes</span>
+                      <button class="btn btn-ghost" style="padding:2px 8px; font-size:0.7rem;" @click="addRoomImage(room)">+ Agregar Foto</button>
+                    </div>
+                    <div style="display:flex; flex-wrap:wrap; gap:10px; margin-top:8px;">
+                      <div v-for="(img, imgIdx) in room.gallery" :key="imgIdx" style="position:relative; width:100px; height:100px; border:1px solid var(--border); border-radius:8px; overflow:hidden;">
+                        <img :src="getImageUrl(img)" style="width:100%; height:100%; object-fit:cover;" v-if="img">
+                        <div v-else style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:var(--bg3);"><i class="fa-solid fa-image"></i></div>
+                        <button class="btn-danger" style="position:absolute; top:4px; right:4px; padding:2px 6px; border-radius:4px; font-size:10px; border:none; cursor:pointer;" @click="removeRoomImage(room, imgIdx)"><i class="fa-solid fa-xmark"></i></button>
+                        <input type="file" accept="image/*" @change="e => uploadSingleImage(e, name => room.gallery[imgIdx] = name)" style="position:absolute; inset:0; opacity:0; cursor:pointer;" v-if="!img">
+                      </div>
                     </div>
                   </div>
 
@@ -774,7 +779,10 @@ createApp({
       if (content.value.logo) set.add(content.value.logo);
       if (content.value.hero && content.value.hero.background) set.add(content.value.hero.background);
       if (content.value.rooms) {
-        content.value.rooms.forEach(r => { if (r.image) set.add(r.image); });
+        content.value.rooms.forEach(r => { 
+          if (r.image) set.add(r.image); 
+          if (r.gallery) r.gallery.forEach(g => { if(g) set.add(g); });
+        });
       }
       if (content.value.gallery) {
         content.value.gallery.forEach(g => { if (g.image) set.add(g.image); });
@@ -807,11 +815,22 @@ createApp({
       return JSON.parse(decodeURIComponent(escape(atob(d.content.replace(/\n/g,'')))));
     };
 
+    const migrateData = (data) => {
+      if (data && data.rooms) {
+        data.rooms.forEach(r => {
+          if (!r.gallery) {
+            r.gallery = r.image ? [r.image] : [];
+          }
+        });
+      }
+      return data;
+    };
+
     const loginGitHub = async () => {
       if (!token.value.trim()) { error.value = 'Por favor ingresa un token de GitHub.'; return; }
       loading.value = true; error.value = ''; isLocalMode.value = false;
       try {
-        content.value = await fetchContent();
+        content.value = migrateData(await fetchContent());
         isLoggedIn.value = true;
         ghConnected.value = true;
         sessionStorage.setItem('gh_token_di_mogalo', token.value);
@@ -822,7 +841,7 @@ createApp({
     const loginLocal = async () => {
       loading.value = true; error.value = ''; isLocalMode.value = true;
       try {
-        content.value = await fetchContent();
+        content.value = migrateData(await fetchContent());
         isLoggedIn.value = true;
         ghConnected.value = false;
       } catch(e) { error.value = 'No se pudo cargar el archivo local content.json'; }
@@ -877,10 +896,16 @@ createApp({
         title: 'Nueva Habitación',
         description: 'Descripción de la habitación...',
         image: 'VISTA.jpg',
+        gallery: ['VISTA.jpg'],
         features: ['🛌 Cama cómoda', '📺 Smart TV', '📶 Wi-Fi']
       });
     };
     const removeRoom = (idx) => content.value.rooms.splice(idx, 1);
+    const addRoomImage = (room) => {
+      if (!room.gallery) room.gallery = [];
+      room.gallery.push('');
+    };
+    const removeRoomImage = (room, idx) => room.gallery.splice(idx, 1);
     const addFeature = (room) => { if (!room.features) room.features = []; room.features.push('✨ Nueva característica'); };
     const removeFeature = (room, fIdx) => room.features.splice(fIdx, 1);
 
@@ -961,7 +986,7 @@ createApp({
       content, activeSection, sections, pendingImages, sidebarOpen, ghConnected,
       statusDot, statusText, currentSectionLabel, currentSectionIcon, siteUrl, mediaList,
       loginGitHub, loginLocal, logout, uploadSingleImage, handleMultipleUploads, getImageUrl,
-      addRoom, removeRoom, addFeature, removeFeature, addGalleryItem, removeGalleryItem,
+      addRoom, removeRoom, addRoomImage, removeRoomImage, addFeature, removeFeature, addGalleryItem, removeGalleryItem,
       addService, removeService, addTip, removeTip, addReview, removeReview, addExpItem, removeExpItem,
       saveChanges, downloadJSON
     };

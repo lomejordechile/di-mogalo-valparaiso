@@ -844,3 +844,50 @@ footer {
     .gallery-overlay p { font-size: 1.3rem; }
 }
 
+/* Lightbox & Room Gallery Styles */
+.room-image { position: relative; cursor: pointer; }
+.room-img-overlay {
+    position: absolute; inset: 0; background: rgba(0,0,0,0.4);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s; color: #fff; border-radius: inherit;
+}
+.room-image:hover .room-img-overlay { opacity: 1; }
+
+#room-lightbox {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+}
+.lb-backdrop {
+    position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
+}
+.lb-content {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 90%; max-width: 900px; text-align: center;
+}
+.lb-img {
+    max-width: 100%; max-height: 80vh; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    display: block; margin: 0 auto; object-fit: contain;
+}
+.lb-close {
+    position: absolute; top: -40px; right: 0; background: transparent; border: none;
+    color: #fff; font-size: 2rem; cursor: pointer; line-height: 1; padding: 0;
+}
+.lb-prev, .lb-next {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    background: rgba(0,0,0,0.5); border: none; color: #fff; font-size: 1.5rem;
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.3s;
+}
+.lb-prev:hover, .lb-next:hover { background: var(--primary); }
+.lb-prev { left: -50px; }
+.lb-next { right: -50px; }
+@media(max-width: 1000px) {
+    .lb-prev { left: 10px; }
+    .lb-next { right: 10px; }
+}
+.lb-dots {
+    margin-top: 15px; display: flex; justify-content: center; gap: 8px;
+}
+.lb-dot {
+    width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: background 0.3s;
+}
+.lb-dot.active { background: var(--primary); }
